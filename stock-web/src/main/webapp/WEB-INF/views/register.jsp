@@ -1,6 +1,6 @@
 <%-- 
-    Document   : main
-    Created on : 2016-04-15, 19:39:19
+    Document   : register
+    Created on : 2016-04-15, 20:00:06
     Author     : TOM
 --%>
 
@@ -9,12 +9,9 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Main</title>
+        <title>Register</title>
     </head>
     <body>
-        <h1>Welcome</h1>
-        
-        
-        
+        <h1>Hello World!</h1>
     </body>
 </html>
