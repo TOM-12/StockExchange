@@ -14,9 +14,10 @@
        http://www.springframework.org/schema/security
        http://www.springframework.org/schema/security/spring-security.xsd">
 
-    <bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping"/>
+    <import resource="mvc-config.xml"/>
+    <import resource="spring-database.xml"/>
 
-    <context:component-scan base-package="org.t.stock.web"/>  
+    <context:component-scan base-package="org.t.stock.web.controller"/>  
 
     <security:global-method-security pre-post-annotations="enabled" secured-annotations="enabled"/>
     

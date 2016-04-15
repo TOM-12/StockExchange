@@ -5,13 +5,13 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
         
-    <!--  Enable Spring MVC annotation at type & method level -->
+    
     <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>    
     <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"/>
-    
-    <mvc:default-servlet-handler /> 
-    <!-- <mvc:annotation-driven conversion-service="conversionService"/>-->
-    
 
+    <mvc:default-servlet-handler /> 
+    <!--<mvc:annotation-driven/>--> 
+     
+    
     
 </beans>
