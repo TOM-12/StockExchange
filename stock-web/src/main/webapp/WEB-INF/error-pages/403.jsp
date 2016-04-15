@@ -11,12 +11,10 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Login</title>
+        <title>403</title>
     </head>
     <body>
-        <h1>Hello</h1>
+        <h1>Acces denied</h1>
 
-        <a>Register</a>
-        <a>Login</a>
     </body>
 </html>
