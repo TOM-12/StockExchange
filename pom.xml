@@ -26,4 +26,9 @@
         <module>stock-dao</module>
         <module>stock-service</module>
     </modules>
+    <profiles>
+        <profile>
+            <id>openshift</id>
+        </profile>
+    </profiles>
 </project>

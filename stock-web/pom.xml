@@ -118,6 +118,9 @@
         </dependency>
     </dependencies>
 
+
+
+
     <build>
         <plugins>
             <plugin>
@@ -167,5 +170,9 @@
             </plugin>
         </plugins>
     </build>
-
+    <profiles>
+        <profile>
+            <id>openshift</id>
+        </profile>
+    </profiles>
 </project>
