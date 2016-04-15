@@ -22,9 +22,9 @@
         </dependencies>
     </dependencyManagement>
     <modules>
-        <module>stock-web</module>
         <module>stock-dao</module>
         <module>stock-service</module>
+        <module>stock-web</module>
     </modules>
     <profiles>
         <profile>
