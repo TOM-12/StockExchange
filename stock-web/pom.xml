@@ -170,9 +170,21 @@
             </plugin>
         </plugins>
     </build>
-    <profiles>
+     <profiles>
         <profile>
             <id>openshift</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <version>2.3</version>
+                        <configuration>
+                            <outputDirectory>webapps</outputDirectory>
+                            <warName>stock-web</warName>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
 </project>

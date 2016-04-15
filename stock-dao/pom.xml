@@ -87,7 +87,7 @@
                         <version>2.3</version>
                         <configuration>
                             <outputDirectory>webapps</outputDirectory>
-                            <warName>ROOT</warName>
+                            <warName>stock-dao</warName>
                         </configuration>
                     </plugin>
                 </plugins>
