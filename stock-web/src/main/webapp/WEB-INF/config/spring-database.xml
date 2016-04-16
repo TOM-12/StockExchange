@@ -7,9 +7,9 @@
           class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://127.11.84.2/stock" />
-        <property name="username" value="adminKBdVPJg" />
-        <property name="password" value="ZsSItu2uTefb" />
+        <property name="url" value="jdbc:mysql://localhost:3306/stock?useSSL=false" />
+        <property name="username" value="app" />
+        <property name="password" value="pass" />
     </bean>
 
 </beans>

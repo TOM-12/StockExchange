@@ -30,6 +30,10 @@
     <welcome-file-list>
         <welcome-file>/WEB-INF/views/index.jsp</welcome-file>
     </welcome-file-list>	
+    <error-page>
+        <error-code>403</error-code>
+        <location>/WEB-INF/error-pages/403.jsp</location>
+    </error-page>
     <filter>
         <filter-name>springSecurityFilterChain</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>

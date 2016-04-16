@@ -16,19 +16,27 @@
     <body>
         <h1>Welcome</h1>
 
-        <sec:authorize access="hasRole('ROLE_USER')">
-            <!-- For login user -->
-            <c:url value="/j_spring_security_logout" var="logoutUrl" />
-            <form action="${logoutUrl}" method="post" id="logoutForm">
-                <input type="hidden" name="${_csrf.parameterName}"
-                       value="${_csrf.token}" />
-            </form>
-            <script>
-                function formSubmit() {
-                    document.getElementById("logoutForm").submit();
-                }
-            </script>
-        </sec:authorize>
+        <p>Please login or register</p>
+        <form name='loginForm'
+              action="<c:url value='/j_spring_security_check'/>" method='POST'>
+            <table>
+                <tr>
+                    <td>User:</td>
+                    <td><input type='text' name='username'></td>
+                </tr>
+                <tr>
+                    <td>Password:</td>
+                    <td><input type='password' name='password' /></td>
+                </tr>
+                <tr>
+                    <td colspan='2'><input name="submit" type="submit" value="submit" /></td>
+                </tr>
+            </table>
+            <input type="hidden" name="${_csrf.parameterName}"
+                   value="${_csrf.token}" />
+        </form>
 
+        <a href="<c:url value='/register'/>">Register</a>
+        
     </body>
 </html>
