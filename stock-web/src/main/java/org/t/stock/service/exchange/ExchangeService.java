@@ -19,19 +19,23 @@ public class ExchangeService {
 
     @Autowired
     PublicationsDAO publicationsDAOImpl;
-    
+
     private static boolean status = false;
+    private DateTime publicationDateTime = null;
+
+    public ExchangeService() {
+        publicationDateTime = null;
+    }
 
     public void updatePublications() {
         System.out.println("org.t.stock.service.exchange.client.ExchangeClient.updatePublications()" + new DateTime());
-        status = true;
         Publication publication = exchangeFPPublicationClient.getPublication();
-        status = null != publication;
-        System.out.println(status);
-        System.out.println(publication);
-        
-        publicationsDAOImpl.insertPublication(publication);
-        System.out.println("******done*****");
+        status = (null != publication);
+        if (status
+                && (null == publicationDateTime || !publicationDateTime.isEqual(publication.getPublicationDate()))) {
+            publicationDateTime = publication.getPublicationDate();
+            publicationsDAOImpl.insertPublication(publication);
+        }
     }
 
     public static boolean getStatus() {
