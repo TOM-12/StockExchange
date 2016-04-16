@@ -23,7 +23,7 @@ public class ExchangeService {
     PublicationsDAO publicationsDAOImpl;
 
     private static boolean status = false;
-    private Date publicationDateTime = null;
+    private DateTime publicationDateTime = null;
 
     public ExchangeService() {
         publicationDateTime = null;
@@ -34,7 +34,7 @@ public class ExchangeService {
         Publication publication = exchangeFPPublicationClient.getPublication();
         status = (null != publication);
         if (status
-                && (null == publicationDateTime || publicationDateTime.getTime() != (publication.getPublicationDate().getTime()))) {
+                && (null == publicationDateTime || !publicationDateTime.isEqual(publication.getPublicationDate()))) {
             publicationDateTime = publication.getPublicationDate();
             publicationsDAOImpl.insertPublication(publication);
         }

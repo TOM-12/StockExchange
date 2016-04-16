@@ -55,7 +55,7 @@ public class PublicationsDAOImpl implements PublicationsDAO {
 
     }
 
-    private long insertPublicationData(final Date publicationDate) {
+    private long insertPublicationData(final DateTime publicationDate) {
         final StringBuilder insertPublicationSql = new StringBuilder()
                 .append(" INSERT IGNORE  INTO publications \n")
                 .append("( \n")
@@ -70,7 +70,7 @@ public class PublicationsDAOImpl implements PublicationsDAO {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement ps = con.prepareStatement(insertPublicationSql.toString(), new String[]{"ID"});
-                ps.setTimestamp(1, new Timestamp(publicationDate.getTime()));
+                ps.setTimestamp(1, new Timestamp(publicationDate.getMillis()));
                 return ps;
             }
         }, keyHolder);
@@ -176,12 +176,12 @@ public class PublicationsDAOImpl implements PublicationsDAO {
                     public void setValues(PreparedStatement ps) throws SQLException {
                         ps.setLong(1, stocks.get(0).getPublicationId());
                     }
-                }, new ResultSetExtractor<Date>() {
+                }, new ResultSetExtractor<DateTime>() {
                     @Override
-                    public Date extractData(ResultSet rs) throws SQLException, DataAccessException {
+                    public DateTime extractData(ResultSet rs) throws SQLException, DataAccessException {
                         rs.beforeFirst();
                         rs.next();
-                        return new Date(rs.getTimestamp("PUB_DATE").getTime());
+                        return new DateTime(rs.getTimestamp("PUB_DATE").getTime());
                     }
                 })
         );
