@@ -9,7 +9,7 @@
     <!-- enable use-expressions -->
     <http auto-config="true" use-expressions="true">
 		
-        <intercept-url pattern="/settings" access="hasRole('ROLE_USER')" />
+        <intercept-url pattern="/stock/*" access="hasRole('ROLE_USER')" />
 		
 		
         <form-login 

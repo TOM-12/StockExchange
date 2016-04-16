@@ -15,22 +15,22 @@ import org.springframework.web.servlet.ModelAndView;
  * @author TOM
  */
 @Controller
-public class MainController {
+public class StockController {
 
-    @RequestMapping(value = {"/", "/index"}, method = RequestMethod.GET)
-    public ModelAndView defaultPage() {
+    @RequestMapping(value = {"/stock"}, method = RequestMethod.GET)
+    public ModelAndView stockPage() {
         System.out.println("org.t.stock.web.controller.MainController.defaultPage()");
         ModelAndView model = new ModelAndView();
-        model.setViewName("index");
+        model.setViewName("stock");
         return model;
 
     }
 
-    @RequestMapping(value = {"/register"}, method = RequestMethod.GET)
-    public ModelAndView register() {
+    @RequestMapping(value = {"/stock/settings"}, method = RequestMethod.GET)
+    public ModelAndView settings() {
         System.out.println("org.t.stock.web.controller.MainController.settings()");
         ModelAndView model = new ModelAndView();
-        model.setViewName("register");
+        model.setViewName("settings");
         return model;
 
     }
