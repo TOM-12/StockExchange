@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.sql.DataSource;
 import org.joda.time.DateTime;
@@ -54,7 +55,7 @@ public class PublicationsDAOImpl implements PublicationsDAO {
 
     }
 
-    private long insertPublicationData(final DateTime publicationDate) {
+    private long insertPublicationData(final Date publicationDate) {
         final StringBuilder insertPublicationSql = new StringBuilder()
                 .append(" INSERT IGNORE  INTO publications \n")
                 .append("( \n")
@@ -69,7 +70,7 @@ public class PublicationsDAOImpl implements PublicationsDAO {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement ps = con.prepareStatement(insertPublicationSql.toString(), new String[]{"ID"});
-                ps.setTimestamp(1, new Timestamp(publicationDate.getMillis()));
+                ps.setTimestamp(1, new Timestamp(publicationDate.getTime()));
                 return ps;
             }
         }, keyHolder);
@@ -155,7 +156,7 @@ public class PublicationsDAOImpl implements PublicationsDAO {
                 .append(" stocks.PRICE, \n")
                 .append(" stocks.AMOUNT, \n")
                 .append(" publications.ID_PUBLICATION \n")
-                .append(" FROM stocks JOIN publications ON LAST_PUB_ID = publications.ID_PUBLICATION \n")
+                .append(" FROM stocks , publications \n")
                 .append(" WHERE 1=1 \n")
                 .append(" AND PUB_DATE = (SELECT MAX(PUB_DATE) FROM publications) \n");
 
@@ -175,12 +176,12 @@ public class PublicationsDAOImpl implements PublicationsDAO {
                     public void setValues(PreparedStatement ps) throws SQLException {
                         ps.setLong(1, stocks.get(0).getPublicationId());
                     }
-                }, new ResultSetExtractor<DateTime>() {
+                }, new ResultSetExtractor<Date>() {
                     @Override
-                    public DateTime extractData(ResultSet rs) throws SQLException, DataAccessException {
+                    public Date extractData(ResultSet rs) throws SQLException, DataAccessException {
                         rs.beforeFirst();
                         rs.next();
-                        return new DateTime(rs.getTimestamp("PUB_DATE").getTime());
+                        return new Date(rs.getTimestamp("PUB_DATE").getTime());
                     }
                 })
         );

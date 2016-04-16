@@ -1,5 +1,7 @@
 package org.t.stock.service.exchange.client;
 
+import com.fasterxml.jackson.datatype.joda.JodaMapper;
+import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.GenericType;
@@ -17,13 +19,15 @@ public class ExchangeClientImpl implements ExchangeClient {
 
     Publication<PublicationStock> publication;
 
-        private static final String REST_SERVICE_URL = "http://webtask.future-processing.com:8068/stocks";
+    private static final String REST_SERVICE_URL = "http://webtask.future-processing.com:8068/stocks";
+
     @Override
     public Publication<PublicationStock> getPublication() {
-        
+
         Client client = ClientBuilder.newClient().register(JacksonFeature.class);
-        publication  = client.target(REST_SERVICE_URL).request().header("accept", "json").accept("json").buildGet().invoke(new GenericType<Publication<PublicationStock>>(){});
-        
+        publication = client.target(REST_SERVICE_URL).request().header("accept", "json").accept("json").buildGet().invoke(new GenericType<Publication<PublicationStock>>() {
+        });
+
         return publication;
     }
 //        try {

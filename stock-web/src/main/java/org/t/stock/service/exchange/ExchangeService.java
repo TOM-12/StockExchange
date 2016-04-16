@@ -1,5 +1,6 @@
 package org.t.stock.service.exchange;
 
+import java.util.Date;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,18 +23,18 @@ public class ExchangeService {
     PublicationsDAO publicationsDAOImpl;
 
     private static boolean status = false;
-    private DateTime publicationDateTime = null;
+    private Date publicationDateTime = null;
 
     public ExchangeService() {
         publicationDateTime = null;
     }
 
     public void updatePublications() {
-        
+
         Publication publication = exchangeFPPublicationClient.getPublication();
         status = (null != publication);
         if (status
-                && (null == publicationDateTime || !publicationDateTime.isEqual(publication.getPublicationDate()))) {
+                && (null == publicationDateTime || publicationDateTime.getTime() != (publication.getPublicationDate().getTime()))) {
             publicationDateTime = publication.getPublicationDate();
             publicationsDAOImpl.insertPublication(publication);
         }

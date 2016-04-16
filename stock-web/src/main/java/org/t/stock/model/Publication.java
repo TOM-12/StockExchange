@@ -7,6 +7,7 @@ import com.fasterxml.jackson.datatype.joda.ser.DateTimeSerializer;
 import java.io.Serializable;
 import org.t.stock.model.stock.StockAbstract;
 import java.util.ArrayList;
+import java.util.Date;
 import org.joda.time.DateTime;
 
 /**
@@ -18,18 +19,17 @@ public class Publication<T extends StockAbstract> implements Serializable {
     private static final long serialVersionUID = -1830089485896819658L;
 
 //    @JsonSerialize
-    @JsonSerialize(using = DateTimeSerializer.class)
-    private DateTime publicationDate;
+    private Date publicationDate;
     private ArrayList<T> items;
 
     public Publication() {
     }
 
-    public DateTime getPublicationDate() {
+    public Date getPublicationDate() {
         return publicationDate;
     }
 
-    public void setPublicationDate(DateTime publicationDate) {
+    public void setPublicationDate(Date publicationDate) {
         this.publicationDate = publicationDate;
     }
 
