@@ -7,11 +7,14 @@
 	http://www.springframework.org/schema/security/spring-security.xsd">
 
     <!-- enable use-expressions -->
-    <http auto-config="true" use-expressions="true">
+    <http pattern="/resources/**" security="none"/>
+    <http 
+        auto-config="true" 
+        use-expressions="true">
 		
-        <intercept-url pattern="/stock/*" access="hasRole('ROLE_USER')" />
+        <intercept-url pattern="/stock**" access="hasRole('ROLE_USER')" />
 		
-		
+		 
         <form-login 
             login-page="/index" 
             login-processing-url="/j_spring_security_check"
@@ -34,7 +37,7 @@
             <password-encoder hash="plaintext"/>
             <jdbc-user-service data-source-ref="dataSource"
                                users-by-username-query=
-		    "select username,password,enabled from users where username=?"
+		    "select CONCAT(FIRST_NAME,' ' , LAST_NAME) AS username  ,password, enabled from users where username=?"
                                authorities-by-username-query=
 		    "select username, role from users where username =?  " />
         </authentication-provider>
