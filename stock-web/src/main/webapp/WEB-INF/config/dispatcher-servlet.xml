@@ -27,6 +27,13 @@
         <task:scheduled ref="exchangeService" method="updatePublications" fixed-rate="25000" />
     </task:scheduled-tasks>
     
+    <bean id="txManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+          scope="singleton">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+    
+    <tx:annotation-driven transaction-manager="txManager"/> 
     
     <security:global-method-security pre-post-annotations="enabled" secured-annotations="enabled"/>
     
