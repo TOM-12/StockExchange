@@ -1,22 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package org.t.stock.model;
+package org.t.stock.model.stock;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
  *
  * @author TOM
  */
-public class Stock {
+public abstract class StockAbstract implements Serializable {
 
     private String name;
     private String code;
     private int unit;
     private BigDecimal price;
+
+    public StockAbstract() {
+    }
 
     public String getName() {
         return name;
@@ -52,7 +51,7 @@ public class Stock {
 
     @Override
     public String toString() {
-        return "ClassPojo [unit = " + unit + ", price = " + price + ", name = " + name + ", code = " + code + "]";
+        return "Stock  [unit = " + unit + ", price = " + price + ", name = " + name + ", code = " + code + "]";
     }
 
 }

@@ -2,22 +2,29 @@ package org.t.stock.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 import javax.sql.DataSource;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.PreparedStatementSetter;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.t.stock.model.Publication;
-import org.t.stock.model.Stock;
+import org.t.stock.model.mapper.StockMapper;
+import org.t.stock.model.stock.PublicationStock;
+import org.t.stock.model.stock.Stock;
 
 /**
  *
@@ -26,8 +33,8 @@ import org.t.stock.model.Stock;
 @Repository
 public class PublicationsDAOImpl implements PublicationsDAO {
 
-    private JdbcTemplate jdbcTemplate;
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Autowired
     public PublicationsDAOImpl(DataSource dataSource) {
@@ -37,7 +44,7 @@ public class PublicationsDAOImpl implements PublicationsDAO {
 
     @Transactional
     @Override
-    public void insertPublication(final Publication publication) {
+    public void insertPublication(final Publication<PublicationStock> publication) {
         long publicationID = insertPublicationData(publication.getPublicationDate());
         if (0 == publicationID) {
             return;
@@ -72,7 +79,7 @@ public class PublicationsDAOImpl implements PublicationsDAO {
         return keyHolder.getKey().longValue();
     }
 
-    private void insertPublishedStocks(final long publicationID, final ArrayList<Stock> items) {
+    private void insertPublishedStocks(final long publicationID, final ArrayList<PublicationStock> items) {
         final StringBuilder insertPubStocksSql = new StringBuilder()
                 .append(" INSERT INTO  pub_stocks \n")
                 .append("( \n")
@@ -93,7 +100,7 @@ public class PublicationsDAOImpl implements PublicationsDAO {
         jdbcTemplate.batchUpdate(insertPubStocksSql.toString(), new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps, int i) throws SQLException {
-                Stock stock = items.get(i);
+                PublicationStock stock = items.get(i);
                 ps.setString(1, stock.getName());
                 ps.setString(2, stock.getCode());
                 ps.setInt(3, stock.getUnit());
@@ -108,7 +115,7 @@ public class PublicationsDAOImpl implements PublicationsDAO {
         });
     }
 
-    private void updateStocksUnitPriceName(final long publicationID, final ArrayList<Stock> items) {
+    private void updateStocksUnitPriceName(final long publicationID, final ArrayList<PublicationStock> items) {
         final StringBuilder updateStocksSql = new StringBuilder()
                 .append(" UPDATE stocks SET \n")
                 .append(" NAME = ? ,\n")
@@ -121,7 +128,7 @@ public class PublicationsDAOImpl implements PublicationsDAO {
         jdbcTemplate.batchUpdate(updateStocksSql.toString(), new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps, int i) throws SQLException {
-                Stock stock = items.get(i);
+                PublicationStock stock = items.get(i);
                 ps.setString(1, stock.getName());
                 ps.setInt(2, stock.getUnit());
                 ps.setBigDecimal(3, stock.getPrice());
@@ -134,6 +141,52 @@ public class PublicationsDAOImpl implements PublicationsDAO {
                 return items.size();
             }
         });
+    }
+
+    @Override
+    public Publication<Stock> getCurrentExchangeRate() {
+
+        final StringBuilder selectStockSql = new StringBuilder()
+                .append(" SELECT \n")
+                .append(" stocks.ID_STOCK, \n")
+                .append(" stocks.CODE, \n")
+                .append(" stocks.NAME, \n")
+                .append(" stocks.UNIT, \n")
+                .append(" stocks.PRICE, \n")
+                .append(" stocks.AMOUNT, \n")
+                .append(" publications.ID_PUBLICATION \n")
+                .append(" FROM stocks JOIN publications ON LAST_PUB_ID = publications.ID_PUBLICATION \n")
+                .append(" WHERE 1=1 \n")
+                .append(" AND PUB_DATE = (SELECT MAX(PUB_DATE) FROM publications) \n");
+
+        final ArrayList<Stock> stocks = new ArrayList<>(jdbcTemplate.query(selectStockSql.toString(), new StockMapper()));
+
+        final StringBuilder selectPublicationDateSql = new StringBuilder()
+                .append(" SELECT  \n")
+                .append(" PUB_DATE  \n")
+                .append(" FROM publications \n")
+                .append(" WHERE 1=1 \n")
+                .append(" AND ID_PUBLICATION = ?  \n");
+
+        Publication<Stock> publication = new Publication<>();
+        publication.setPublicationDate(
+                jdbcTemplate.query(selectPublicationDateSql.toString(), new PreparedStatementSetter() {
+                    @Override
+                    public void setValues(PreparedStatement ps) throws SQLException {
+                        ps.setLong(1, stocks.get(0).getPublicationId());
+                    }
+                }, new ResultSetExtractor<DateTime>() {
+                    @Override
+                    public DateTime extractData(ResultSet rs) throws SQLException, DataAccessException {
+                        rs.beforeFirst();
+                        rs.next();
+                        return new DateTime(rs.getTimestamp("PUB_DATE").getTime());
+                    }
+                })
+        );
+        publication.setItems(stocks);
+
+        return publication;
     }
 
 }

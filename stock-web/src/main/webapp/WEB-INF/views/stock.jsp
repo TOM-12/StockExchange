@@ -19,12 +19,25 @@
         <link href="<c:url value='/resources/css/bootstrap.min.css'/>" rel="stylesheet"/>
 
         <script type="text/javascript">
+            window.setInterval(doAjax, 10000);
+            window.setInterval(doCurrentStock, 10000);
+
             function doAjax() {
                 $.ajax({
-                    url: '${pageContext.request.contextPath}/stock/ajax',
+                    url: '${pageContext.request.contextPath}/stock/test',
                     type: 'GET',
                     success: function (data) {
-                        $('#time').html(data);
+                        $('#test').html(data);
+                    }
+                });
+            }
+
+            function doCurrentStock() {
+                $.ajax({
+                    url: '${pageContext.request.contextPath}/stock/currentStock',
+                    type: 'GET',
+                    success: function (data) {
+                        $('#curentStock').html(data);
                     }
                 });
             }
@@ -39,8 +52,10 @@
         <div>
             <h2>Stock prices</h2>
 
-            <button id="demo" onclick="doAjax()" title="Button">Get the time!</button>
-            <div id="time">
+            <div id="test">
+            </div>
+            <hr/>
+            <div id="curentStock">
             </div>
 
         </div>  

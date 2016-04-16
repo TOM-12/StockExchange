@@ -20,7 +20,7 @@
             login-processing-url="/j_spring_security_check"
             default-target-url="/stock" 
             always-use-default-target="false"
-            authentication-failure-url="/login?error"
+            authentication-failure-url="/index?error"
             username-parameter="username"            
             password-parameter="password"
         />
@@ -37,9 +37,9 @@
             <password-encoder hash="plaintext"/>
             <jdbc-user-service data-source-ref="dataSource"
                                users-by-username-query=
-		    "select CONCAT(FIRST_NAME,' ' , LAST_NAME) AS username  ,password, enabled from users where username=?"
+		    "select login  ,password, enabled from users where login = ? "
                                authorities-by-username-query=
-		    "select username, role from users where username =?  " />
+		    "select login, role from users where login =?  " />
         </authentication-provider>
     </authentication-manager>
 

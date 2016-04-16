@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.t.stock.dao.PublicationsDAO;
 import org.t.stock.model.Publication;
+import org.t.stock.model.stock.PublicationStock;
 import org.t.stock.service.exchange.client.ExchangeClient;
 
 /**
@@ -28,7 +29,7 @@ public class ExchangeService {
     }
 
     public void updatePublications() {
-        System.out.println("org.t.stock.service.exchange.client.ExchangeClient.updatePublications()" + new DateTime());
+        
         Publication publication = exchangeFPPublicationClient.getPublication();
         status = (null != publication);
         if (status
