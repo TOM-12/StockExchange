@@ -10,12 +10,20 @@
             <sec:authentication property="principal.lastName" var="lastName" />               
             <p>Logged as ${firstName} ${lastName}</p>		
             <a href="${pageContext.request.contextPath}/stock/settings"><i class="fa fa-cog fa-3x"></i></a>
-            <c:url value="/j_spring_security_logout" var="logoutUrl" />
-            <form action="${logoutUrl}" method="post" id="logoutForm">
-                <input type="hidden" name="${_csrf.parameterName}"
-                       value="${_csrf.token}" />
+
+            <c:url value="" var="logoutUrl" />
+            <form action="${pageContext.request.contextPath}/j_spring_security_logout" method="post" id="logoutForm">
+
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
             </form>
+
             <a href="javascript:formSubmit()" /><i class="fa fa-power-off fa-3x"></i></a>
         </sec:authorize>
     </div>
+
+    <script>
+        function formSubmit() {
+            document.getElementById("logoutForm").submit();
+        }
+    </script>
 </header>

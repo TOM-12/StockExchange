@@ -1,11 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.t.stock.web.controller;
 
-//import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import org.t.stock.dao.PublicationsDAO;
+import org.t.stock.service.publication.PublicationServiceImpl;
 
 /**
  *
@@ -26,9 +20,9 @@ import org.t.stock.dao.PublicationsDAO;
 public class StockController {
 
     @Autowired
-    private PublicationsDAO publicationsDAOImpl;
+    private PublicationServiceImpl publicationServiceImpl;
 
-    @RequestMapping(value = {"/stock"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/stock"}, method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView stockPage() {
         System.out.println("org.t.stock.web.controller.MainController.defaultPage()");
         ModelAndView model = new ModelAndView();
@@ -37,7 +31,7 @@ public class StockController {
 
     }
 
-    @RequestMapping(value = {"/stock/settings"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/stock/settings"}, method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView settings() {
         System.out.println("org.t.stock.web.controller.MainController.settings()");
         ModelAndView model = new ModelAndView();
@@ -50,7 +44,7 @@ public class StockController {
     public @ResponseBody
     String getTime() {
 
-        String result = (publicationsDAOImpl.getCurrentExchangeRate().toString());
+        String result = (publicationServiceImpl.getCurrentExchangeRate().toString());
         return result;
     }
 
@@ -59,13 +53,13 @@ public class StockController {
     String getCurrentStock() {
 
         ObjectMapper mapper = new ObjectMapper();
-        String string="?";
+        String string = "?";
         try {
-            string = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(publicationsDAOImpl.getCurrentExchangeRate());
+            string = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(publicationServiceImpl.getCurrentExchangeRate());
         } catch (IOException ex) {
             Logger.getLogger(StockController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        publicationsDAOImpl.getCurrentExchangeRate();
+        publicationServiceImpl.getCurrentExchangeRate();
 
         return string;
     }

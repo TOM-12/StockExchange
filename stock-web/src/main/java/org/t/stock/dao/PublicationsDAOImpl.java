@@ -6,8 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import javax.sql.DataSource;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +15,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.ResultSetExtractor;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -152,7 +149,7 @@ public class PublicationsDAOImpl implements PublicationsDAO {
                 .append(" stocks.NAME, \n")
                 .append(" stocks.UNIT, \n")
                 .append(" stocks.PRICE, \n")
-                .append(" stocks.AMOUNT, \n")
+                .append(" stocks.AVAILABLE, \n")
                 .append(" publications.ID_PUBLICATION \n")
                 .append(" FROM stocks , publications \n")
                 .append(" WHERE 1=1 \n")

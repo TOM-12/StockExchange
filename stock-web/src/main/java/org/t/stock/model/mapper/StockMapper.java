@@ -13,15 +13,15 @@ public class StockMapper implements RowMapper<Stock> {
 
     @Override
     public Stock mapRow(ResultSet rs, int rowNum) throws SQLException {
-        Stock stock = new Stock(
-                rs.getLong("ID_STOCK"),
-                rs.getLong("ID_PUBLICATION")
-        );
-        stock.setCode(rs.getString("CODE"));
-        stock.setName(rs.getString("NAME"));
-        stock.setUnit(rs.getInt("UNIT"));
-        stock.setPrice(rs.getBigDecimal("PRICE"));
-        stock.setAmount(rs.getLong("AMOUNT"));
+        Stock stock = new Stock.StockBuilder()
+                .setId(rs.getLong("ID_STOCK"))
+                .setName(rs.getString("NAME"))
+                .setCode(rs.getString("CODE"))
+                .setUnit(rs.getInt("UNIT"))
+                .setPrice(rs.getBigDecimal("PRICE"))
+                .setAvailable(rs.getLong("AVAILABLE"))
+                .setPublicationId(rs.getLong("ID_PUBLICATION"))
+                .createStock();
 
         return stock;
     }

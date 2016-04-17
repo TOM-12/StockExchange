@@ -32,7 +32,9 @@
 
         </div>
         <main>     
-            <tiles:insertAttribute name="body"/>
+            <div class="container-fluid">
+                <tiles:insertAttribute name="body"/>            
+            </div>
         </main>
         <div class="container-fluid">
             <hr/>

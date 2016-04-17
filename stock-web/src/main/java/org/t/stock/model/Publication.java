@@ -1,7 +1,7 @@
 package org.t.stock.model;
 
 import java.io.Serializable;
-import org.t.stock.model.stock.StockAbstract;
+import org.t.stock.model.stock.BaseStock;
 import java.util.ArrayList;
 import org.joda.time.DateTime;
 
@@ -9,7 +9,7 @@ import org.joda.time.DateTime;
  *
  * @author TOM
  */
-public class Publication<T extends StockAbstract> implements Serializable {
+public class Publication<T extends BaseStock> implements Serializable {
 
     private static final long serialVersionUID = -1830089485896819658L;
 

@@ -24,7 +24,7 @@
     <mvc:resources mapping="/resources/**" location="/resources/"/>
     <context:component-scan base-package="org.t.stock"/>  
     <task:scheduled-tasks>
-        <task:scheduled ref="exchangeService" method="updatePublications" fixed-delay="5000" />
+        <task:scheduled ref="exchangeService" method="updatePublications" initial-delay="10000" fixed-delay="5000" />
     </task:scheduled-tasks>
     
     <bean id="txManager"
