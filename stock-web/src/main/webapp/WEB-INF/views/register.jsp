@@ -15,39 +15,39 @@
 
 <form:form method="POST" modelAttribute="registerForm" id="registerForm" role="form" >
     <div class="form-group row">
-        <form:label  path="firstName"  cssClass="control-label col-sm-1 col-sm-offset-4">First name:</form:label>
-            <div class="col-sm-3">
+        <form:label  path="firstName"  cssClass="control-label col-md-1 col-md-offset-4">First name:</form:label>
+            <div class="col-md-3">
             <form:input id="userFirstName" path="firstName" cssClass="form-control" placeholder="First name" cssErrorClass="form-control error" maxlength="45"/>
             <form:errors path="firstName" cssClass="error" />
         </div>
     </div>
 
     <div class="form-group row">
-        <form:label path="lastName" cssClass="control-label col-sm-1 col-sm-offset-4">Last name:</form:label>
-            <div class="col-sm-3">
+        <form:label path="lastName" cssClass="control-label col-md-1 col-md-offset-4">Last name:</form:label>
+            <div class="col-md-3">
             <form:input id="userLastName" path="lastName"  cssClass="form-control" placeholder="Last name" cssErrorClass="form-control error" maxlength="45"/>
             <form:errors path="lastName" cssClass="error" />
         </div>
     </div>
 
     <div class="form-group row">
-        <form:label path="login" cssClass="control-label col-sm-1 col-sm-offset-4">Login:</form:label>
-            <div class="col-sm-3">
+        <form:label path="login" cssClass="control-label col-md-1 col-md-offset-4">Login:</form:label>
+            <div class="col-md-3">
             <form:input id="userlogin" path="login" cssClass="form-control" placeholder="Login" cssErrorClass="form-control error" maxlength="45"/>
             <form:errors path="login" cssClass="error" />
         </div>
     </div>
 
     <div class="form-group row">
-        <form:label path="password" cssClass="control-label col-sm-1 col-sm-offset-4">Password:</form:label>
-            <div class="col-sm-3">
+        <form:label path="password" cssClass="control-label col-md-1 col-md-offset-4">Password:</form:label>
+            <div class="col-md-3">
             <form:password id="userpassword" path="password" cssClass="form-control" placeholder="Password" cssErrorClass="form-control error" maxlength="45"/>
             <form:errors path="password" cssClass="error" />
         </div>
     </div>
 
     <div class="form-group row">
-        <div class="col-md-4 col-md-offset-4 panel panel-default">
+        <div class="col-md-6 col-md-offset-3 panel panel-default">
             <div class="row center-block" style="text-align: center">
                 <label>Wallet (Exchange rates from ${registerForm.publicationDate}):</label>
             </div>
@@ -81,22 +81,22 @@
     </div>
 
     <div class="form-group row">
-        <form:label path="money" cssClass="control-label col-sm-1 col-sm-offset-4">Available money[PLN]:</form:label>
-            <div class="col-sm-3">
+        <form:label path="money" cssClass="control-label col-md-1 col-md-offset-4">Available money[PLN]:</form:label>
+            <div class="col-md-3">
             <form:input id="usermoney" path="money" cssClass="form-control" placeholder="Available money" cssErrorClass="form-control error" maxlength="45"/>
             <form:errors path="money" cssClass="error" />
         </div>
     </div>
 
-    <div class="form-group row">
-        <div class="col-sm-offset-4 col-sm-7">
-            <button id="submit" type="submit" class="btn btn-primary btn-md">
-                Register
-            </button>
-            <button id="submit" type="button" class="btn btn-secondary- btn-md" onclick="location.href = '${pageContext.request.contextPath}/index ';">
+    <div class="form-group row text-center ">
+        <div class="btn-group btn-group-md" role="group" >
+            <button role="group" id="submit" type="button" class="btn btn-secondary- btn-md" onclick="location.href = '${pageContext.request.contextPath}/index ';">
                 <i class="fa fa-arrow-left">
                 </i>
                 Return
+            </button>
+            <button  role="group"id="submit" type="submit" class="btn btn-primary btn-md">
+                Register
             </button>
         </div>
     </div>

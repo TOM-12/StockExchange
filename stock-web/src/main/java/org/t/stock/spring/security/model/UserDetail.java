@@ -12,8 +12,8 @@ public class UserDetail implements UserDetails {
 
     private static final long serialVersionUID = 314111555759448289L;
 
-    private String firstName;
-    private String lastName;
+    private final String firstName;
+    private final String lastName;
     private final boolean enabled;
     private final String username;
     private final String password;
@@ -67,16 +67,55 @@ public class UserDetail implements UserDetails {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+    public static class UserDetailBuilder {
 
+        private String firstName;
+        private String lastName;
+        private boolean enabled;
+        private String username;
+        private String password;
+        private Collection<? extends org.springframework.security.core.GrantedAuthority> authoritys;
+
+        public UserDetailBuilder() {
+        }
+
+        public UserDetailBuilder setFirstName(String firstName) {
+            this.firstName = firstName;
+            return this;
+        }
+
+        public UserDetailBuilder setLastName(String lastName) {
+            this.lastName = lastName;
+            return this;
+        }
+
+        public UserDetailBuilder setEnabled(boolean enabled) {
+            this.enabled = enabled;
+            return this;
+        }
+
+        public UserDetailBuilder setUsername(String username) {
+            this.username = username;
+            return this;
+        }
+
+        public UserDetailBuilder setPassword(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public UserDetailBuilder setAuthoritys(Collection<? extends org.springframework.security.core.GrantedAuthority> authoritys) {
+            this.authoritys = authoritys;
+            return this;
+        }
+
+        public UserDetail createUserDetail() {
+            return new UserDetail(firstName, lastName, enabled, username, password, authoritys);
+        }
+
+    }
 }

@@ -1,6 +1,7 @@
 package org.t.stock.web.controller;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -21,10 +22,8 @@ import org.t.stock.service.publication.PublicationServiceImpl;
 @Controller
 public class StockController {
 
-    @Autowired
-    private PublicationServiceImpl publicationServiceImpl;
 
-    @RequestMapping(value = {"/stock"}, method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = {"/stock"}, method = {RequestMethod.GET})
     public ModelAndView stockPage() {
         System.out.println("org.t.stock.web.controller.MainController.defaultPage()");
         ModelAndView model = new ModelAndView();
@@ -33,43 +32,4 @@ public class StockController {
 
     }
 
-    @RequestMapping(value = {"/stock/settings"}, method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView settings() {
-        System.out.println("org.t.stock.web.controller.MainController.settings()");
-        ModelAndView model = new ModelAndView();
-        model.setViewName("settingsPageDefinition");
-        return model;
-
-    }
-
-    @RequestMapping(value = "/stock/test", method = RequestMethod.GET)
-    public @ResponseBody
-    String getTime() {
-
-        ObjectMapper mapper = new ObjectMapper();
-        String string = null;
-        Publication<Stock> currentExchangeRate = publicationServiceImpl.getCurrentExchangeRate();
-        currentExchangeRate.setPublicationDate(null);
-        try {
-            string = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(currentExchangeRate);
-        } catch (IOException ex) {
-            Logger.getLogger(StockController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return string;
-    }
-
-    @RequestMapping(value = "/stock/currentStock", method = RequestMethod.GET)
-    public @ResponseBody
-    String getCurrentStock() {
-
-        ObjectMapper mapper = new ObjectMapper();
-        String string = null;
-        try {
-            string = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(publicationServiceImpl.getCurrentExchangeRate());
-        } catch (IOException ex) {
-            Logger.getLogger(StockController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return string;
-    }
 }

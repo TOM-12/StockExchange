@@ -5,7 +5,6 @@
 
 <div class="panel panel-default col-sm-4 col-sm-offset-4" >
 
-
     <form class="form-horizontal" name='loginForm'
           action="<c:url value='/j_spring_security_check'/>" 
           method='POST'>

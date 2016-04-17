@@ -46,7 +46,8 @@ public class UserDAOImpl implements UserDAO {
                 .append(" WHERE 1=1\n")
                 .append(" AND LOGIN = ? ");
 
-        UserDetails userDetails = jdbcTemplate.query(sql.toString(), new PreparedStatementSetter() {
+        UserDetails userDetails;
+        userDetails = jdbcTemplate.query(sql.toString(), new PreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps) throws SQLException {
                 ps.setString(1, username);
@@ -58,14 +59,16 @@ public class UserDAOImpl implements UserDAO {
                 rs.next();
                 ArrayList<GrantedAuthority> arrayList = new ArrayList<>(0);
                 arrayList.add(new SimpleGrantedAuthority(rs.getString("ROLE")));
-                UserDetail ud = new UserDetail(
-                        rs.getString("FIRST_NAME"),
-                        rs.getString("LAST_NAME"),
-                        rs.getBoolean("ENABLED"),
-                        rs.getString("LOGIN"),
-                        rs.getString("PASSWORD"),
-                        arrayList
-                );
+
+                UserDetail ud = new UserDetail.UserDetailBuilder()
+                        .setUsername(rs.getString("LOGIN"))
+                        .setFirstName(rs.getString("FIRST_NAME"))
+                        .setLastName(rs.getString("LAST_NAME"))
+                        .setPassword(rs.getString("PASSWORD"))
+                        .setEnabled(rs.getBoolean("ENABLED"))
+                        .setAuthoritys(arrayList)
+                        .createUserDetail();
+
                 return ud;
             }
         });

@@ -15,6 +15,8 @@
             success: function (data) {
                 var a = data.publicationDate;
                 $('#test').html(a);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
 
             },
             complete: function () {
@@ -25,6 +27,8 @@
     function populateTable(obj) {
         var r = new Array();
         var j = -1;
+        r[++j] = 'Current exchange rates are from: ';
+        r[++j] = obj.publicationDate;
         r[++j] = '<table id="stocksTable" class="table table-bordered"><thead><tr><th>Company</th><th>Value</th><th>Actions</th></tr></thead>';
 
         for (var i in obj.items) {
@@ -53,6 +57,9 @@
             type: 'GET',
             success: function (data) {
                 populateTable(data);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $('#curentStock').html("Connection to service failed");
             },
             complete: function () {
                 setTimeout(doCurrentStock, 5000);
