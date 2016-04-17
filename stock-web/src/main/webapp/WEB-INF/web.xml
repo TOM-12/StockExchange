@@ -28,7 +28,7 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>/WEB-INF/views/index.jsp</welcome-file>
+        <welcome-file>redirect.jsp</welcome-file>
     </welcome-file-list>	
     <error-page>
         <error-code>403</error-code>

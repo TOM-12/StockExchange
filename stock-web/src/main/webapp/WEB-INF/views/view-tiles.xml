@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="ISO-8859-2"?>
+<!DOCTYPE tiles-definitions PUBLIC
+	"-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+	"http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+
+    <definition name="startPageDefinition" extends="noMenuLayoutViewDefinitions">
+        <put-attribute name="body" value="/WEB-INF/views/index.jsp" />
+        <put-attribute name="title" value="Welcome" cascade="true"/>  
+    </definition>
+    
+
+    <definition name="registerPageDefinition" extends="noMenuLayoutViewDefinitions">
+        <put-attribute name="body" value="/WEB-INF/views/register.jsp" />
+        <put-attribute name="title" value="Register"  cascade="true"/>  
+    </definition>
+    
+
+    <definition name="stockPageDefinition" extends="standardLayoutViewDefinition">
+        <put-attribute name="body" value="/WEB-INF/views/stock.jsp" />
+        <put-attribute name="title" value="Stocks"  cascade="true"/>  
+    </definition>
+    
+
+    <definition name="settingsPageDefinition" extends="standardLayoutViewDefinition">
+        <put-attribute name="body" value="/WEB-INF/views/settings.jsp" />
+        <put-attribute name="title" value="Settings"  cascade="true"/>  
+    </definition>
+    
+    
+</tiles-definitions>

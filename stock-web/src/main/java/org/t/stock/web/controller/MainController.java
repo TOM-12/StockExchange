@@ -21,7 +21,7 @@ public class MainController {
     public ModelAndView defaultPage() {
         System.out.println("org.t.stock.web.controller.MainController.defaultPage()");
         ModelAndView model = new ModelAndView();
-        model.setViewName("index");
+        model.setViewName("startPageDefinition");
         return model;
 
     }
@@ -30,7 +30,7 @@ public class MainController {
     public ModelAndView register() {
         System.out.println("org.t.stock.web.controller.MainController.settings()");
         ModelAndView model = new ModelAndView();
-        model.setViewName("register");
+        model.setViewName("registerPageDefinition");
         return model;
 
     }

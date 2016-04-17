@@ -32,7 +32,7 @@ public class StockController {
     public ModelAndView stockPage() {
         System.out.println("org.t.stock.web.controller.MainController.defaultPage()");
         ModelAndView model = new ModelAndView();
-        model.setViewName("stock");
+        model.setViewName("stockPageDefinition");
         return model;
 
     }
@@ -41,7 +41,7 @@ public class StockController {
     public ModelAndView settings() {
         System.out.println("org.t.stock.web.controller.MainController.settings()");
         ModelAndView model = new ModelAndView();
-        model.setViewName("settings");
+        model.setViewName("settingsPageDefinition");
         return model;
 
     }

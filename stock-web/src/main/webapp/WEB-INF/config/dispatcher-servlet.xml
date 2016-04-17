@@ -38,10 +38,11 @@
     <tx:annotation-driven transaction-manager="txManager"/> 
     
     <security:global-method-security pre-post-annotations="enabled" secured-annotations="enabled"/>
-    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    
+<!--    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/views/"/>
         <property name="suffix" value=".jsp"/>
-    </bean>
+    </bean>-->
 
 
 </beans>
