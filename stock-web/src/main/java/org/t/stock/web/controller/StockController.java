@@ -9,6 +9,7 @@ package org.t.stock.web.controller;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +26,7 @@ import org.t.stock.dao.PublicationsDAO;
 public class StockController {
 
     @Autowired
-    PublicationsDAO publicationsDAOImpl;
+    private PublicationsDAO publicationsDAOImpl;
 
     @RequestMapping(value = {"/stock"}, method = RequestMethod.GET)
     public ModelAndView stockPage() {
@@ -57,16 +58,15 @@ public class StockController {
     public @ResponseBody
     String getCurrentStock() {
 
-//        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new ObjectMapper();
         String string="?";
-//        try {
-//            string = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(publicationsDAOImpl.getCurrentExchangeRate());
-//        } catch (IOException ex) {
-//            Logger.getLogger(StockController.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        try {
+            string = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(publicationsDAOImpl.getCurrentExchangeRate());
+        } catch (IOException ex) {
+            Logger.getLogger(StockController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         publicationsDAOImpl.getCurrentExchangeRate();
 
-        System.out.println(string);
         return string;
     }
 }

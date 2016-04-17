@@ -17,10 +17,10 @@ import org.t.stock.service.exchange.client.ExchangeClient;
 public class ExchangeService {
 
     @Autowired
-    ExchangeClient exchangeFPPublicationClient;
+    private ExchangeClient exchangeFPPublicationClient;
 
     @Autowired
-    PublicationsDAO publicationsDAOImpl;
+    private PublicationsDAO publicationsDAOImpl;
 
     private static boolean status = false;
     private DateTime publicationDateTime = null;

@@ -39,8 +39,6 @@ public class ExchangeClientImpl implements ExchangeClient {
         publication = response.getEntity(new GenericType< Publication<PublicationStock>>() {
         });
 
-        System.out.println("???? " + publication.getPublicationDate());
-
         return publication;
     }
 

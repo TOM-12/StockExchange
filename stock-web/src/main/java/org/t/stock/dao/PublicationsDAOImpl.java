@@ -35,12 +35,10 @@ import org.t.stock.model.stock.Stock;
 public class PublicationsDAOImpl implements PublicationsDAO {
 
     private final JdbcTemplate jdbcTemplate;
-    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Autowired
     public PublicationsDAOImpl(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
-        namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
     @Transactional
