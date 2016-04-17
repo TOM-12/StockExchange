@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="ISO-8859-2"?>
+<!DOCTYPE tiles-definitions PUBLIC
+	"-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+	"http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+
+
+    <definition name="stockPageDefinition" extends="standardLayoutViewDefinition">
+        <put-attribute name="body" value="stockContainerDefinition" />
+        <put-attribute name="title" value="Stocks"  cascade="true"/>  
+    </definition>
+    
+    
+    <definition name="stockContainerDefinition" template="/WEB-INF/views/stock/stockContainer.jsp">
+        <put-attribute name="stockPrices" value="/WEB-INF/views/stock/stockPrices.jsp"  />
+        <put-attribute name="wallet" value="/WEB-INF/views/stock/wallet.jsp" />        
+    </definition>
+    
+
+    
+    
+    
+</tiles-definitions>

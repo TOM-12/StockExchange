@@ -15,18 +15,7 @@
         <put-attribute name="body" value="/WEB-INF/views/register.jsp" />
         <put-attribute name="title" value="Register"  cascade="true"/>  
     </definition>
-    
 
-    <definition name="stockPageDefinition" extends="standardLayoutViewDefinition">
-        <put-attribute name="body" value="/WEB-INF/views/stock.jsp" />
-        <put-attribute name="title" value="Stocks"  cascade="true"/>  
-    </definition>
-    
-
-    <definition name="settingsPageDefinition" extends="standardLayoutViewDefinition">
-        <put-attribute name="body" value="/WEB-INF/views/settings.jsp" />
-        <put-attribute name="title" value="Settings"  cascade="true"/>  
-    </definition>
     
     
 </tiles-definitions>

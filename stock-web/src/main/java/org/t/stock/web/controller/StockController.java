@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.t.stock.model.Publication;
+import org.t.stock.model.stock.Stock;
 import org.t.stock.service.publication.PublicationServiceImpl;
 
 /**
@@ -44,8 +46,16 @@ public class StockController {
     public @ResponseBody
     String getTime() {
 
-        String result = (publicationServiceImpl.getCurrentExchangeRate().toString());
-        return result;
+        ObjectMapper mapper = new ObjectMapper();
+        String string = null;
+        Publication<Stock> currentExchangeRate = publicationServiceImpl.getCurrentExchangeRate();
+        currentExchangeRate.setPublicationDate(null);
+        try {
+            string = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(currentExchangeRate);
+        } catch (IOException ex) {
+            Logger.getLogger(StockController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return string;
     }
 
     @RequestMapping(value = "/stock/currentStock", method = RequestMethod.GET)
@@ -53,13 +63,12 @@ public class StockController {
     String getCurrentStock() {
 
         ObjectMapper mapper = new ObjectMapper();
-        String string = "?";
+        String string = null;
         try {
             string = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(publicationServiceImpl.getCurrentExchangeRate());
         } catch (IOException ex) {
             Logger.getLogger(StockController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        publicationServiceImpl.getCurrentExchangeRate();
 
         return string;
     }

@@ -65,15 +65,15 @@
                 </thead>
                 <c:forEach items="${registerForm.walletStocks}" var="item" varStatus="idx">
                     <tr>
-                        <th  >${item.name}</th>
-                        <th>${item.code}</th>
-                        <th  >${item.price}</th>
-                        <th  >${item.unit}</th>
-                        <th  >${item.available}</th>
-                        <th  >
+                        <td>${item.name}</td>
+                        <td>${item.code}</td>
+                        <td>${item.price}</td>
+                        <td>${item.unit}</td>
+                        <td>${item.available}</td>
+                        <td>
                             <form:input id="walletStocks[${idx.index}].walletAmount" path="walletStocks[${idx.index}].walletAmount" cssClass="form-control" placeholder="0" cssErrorClass="form-control error" maxlength="11"/>
                             <form:errors path="walletStocks[${idx.index}].walletAmount" cssClass="error" />
-                        </th>
+                        </td>
                     </tr>
                 </c:forEach>
             </table>
