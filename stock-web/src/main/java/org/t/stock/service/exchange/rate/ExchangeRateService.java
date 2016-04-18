@@ -1,15 +1,12 @@
-package org.t.stock.service.exchange;
+package org.t.stock.service.exchange.rate;
 
-import java.util.Date;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.t.stock.dao.publication.PublicationsDAO;
 import org.t.stock.model.Publication;
-import org.t.stock.model.stock.PublicationStock;
-import org.t.stock.service.exchange.client.ExchangeClient;
+import org.t.stock.service.exchange.rate.client.ExchangeClient;
 import org.t.stock.service.publication.PublicationService;
 
 /**
@@ -17,9 +14,9 @@ import org.t.stock.service.publication.PublicationService;
  * @author TOM
  */
 @Service
-public class ExchangeService {
+public class ExchangeRateService {
 
-    private static final Logger LOGGER = LogManager.getLogger(ExchangeService.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(ExchangeRateService.class.getName());
 
     @Autowired
     private ExchangeClient exchangeFPPublicationClient;
@@ -30,7 +27,7 @@ public class ExchangeService {
     private static boolean status = false;
     private DateTime publicationDateTime = null;
 
-    public ExchangeService() {
+    public ExchangeRateService() {
         publicationDateTime = null;
     }
 
@@ -39,7 +36,7 @@ public class ExchangeService {
 
         Publication publication = exchangeFPPublicationClient.getPublication();
         if (null != publication) {
-            status=true;
+            status = true;
             LOGGER.debug("status: " + status);
             if (null == publicationDateTime || publicationDateTime.getMillis() != (publication.getPublicationDate().getMillis())) {
                 publicationDateTime = publication.getPublicationDate();

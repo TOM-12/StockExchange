@@ -1,4 +1,4 @@
-package org.t.stock.service.exchange.client;
+package org.t.stock.service.exchange.rate.client;
 
 import org.t.stock.model.Publication;
 

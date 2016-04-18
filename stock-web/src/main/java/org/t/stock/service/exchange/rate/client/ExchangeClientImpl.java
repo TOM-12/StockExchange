@@ -1,4 +1,4 @@
-package org.t.stock.service.exchange.client;
+package org.t.stock.service.exchange.rate.client;
 
 import org.springframework.stereotype.Repository;
 import org.t.stock.model.Publication;
