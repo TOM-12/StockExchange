@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import javax.sql.DataSource;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -31,6 +33,8 @@ import org.t.stock.model.stock.Stock;
 @Repository
 public class PublicationsDAOImpl implements PublicationsDAO {
 
+    private static final Logger LOGGER = LogManager.getLogger(PublicationsDAOImpl.class.getName());
+
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -38,21 +42,9 @@ public class PublicationsDAOImpl implements PublicationsDAO {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    @Transactional
-    @Override
-    public void insertPublication(final Publication<PublicationStock> publication) {
-        long publicationID = insertPublicationData(publication.getPublicationDate());
-        if (0 == publicationID) {
-            return;
-        }
-        insertPublishedStocks(publicationID, publication.getItems());
-        updateStocksUnitPriceName(publicationID, publication.getItems());
-
-    }
-
-    private long insertPublicationData(final DateTime publicationDate) {
+    public long insertPublicationData(final DateTime publicationDate) {
         final StringBuilder insertPublicationSql = new StringBuilder()
-                .append(" INSERT IGNORE  INTO publications \n")
+                .append(" INSERT INTO publications \n")
                 .append("( \n")
                 .append("PUB_DATE \n")
                 .append(" ) \n")
@@ -75,7 +67,7 @@ public class PublicationsDAOImpl implements PublicationsDAO {
         return keyHolder.getKey().longValue();
     }
 
-    private void insertPublishedStocks(final long publicationID, final ArrayList<PublicationStock> items) {
+    public void insertPublishedStocks(final long publicationID, final ArrayList<PublicationStock> items) {
         final StringBuilder insertPubStocksSql = new StringBuilder()
                 .append(" INSERT INTO  pub_stocks \n")
                 .append("( \n")
@@ -109,9 +101,10 @@ public class PublicationsDAOImpl implements PublicationsDAO {
                 return items.size();
             }
         });
+
     }
 
-    private void updateStocksUnitPriceName(final long publicationID, final ArrayList<PublicationStock> items) {
+    public void updateStocksUnitPriceName(final long publicationID, final ArrayList<PublicationStock> items) {
         final StringBuilder updateStocksSql = new StringBuilder()
                 .append(" UPDATE stocks SET \n")
                 .append(" NAME = ? ,\n")

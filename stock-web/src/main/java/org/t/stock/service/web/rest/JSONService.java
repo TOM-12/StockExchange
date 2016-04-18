@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.t.stock.model.Publication;
 import org.t.stock.model.stock.Stock;
+import org.t.stock.service.publication.PublicationService;
 import org.t.stock.service.publication.PublicationServiceImpl;
 
 /**
@@ -26,7 +27,7 @@ import org.t.stock.service.publication.PublicationServiceImpl;
 public class JSONService {
 
     @Autowired
-    private PublicationServiceImpl publicationServiceImpl;
+    private PublicationService publicationServiceImpl;
 
     @RequestMapping(value = "/stock/test", method = RequestMethod.GET)
     public String getTime() {
