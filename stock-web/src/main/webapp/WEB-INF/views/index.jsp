@@ -16,7 +16,7 @@
         </div>
 
         <div class="form-group row">
-            <label  for="password"  class="control-label control-label col-sm-2 col-sm-offset-2">Password</label>
+            <label  for="password"  class="control-label control-label col-sm-2 col-sm-offset-2">Password:</label>
             <div class="col-sm-6">
                 <input type='password'  id="password" name="password" class="form-control" placeholder="Password"  maxlength="45"/>
             </div>

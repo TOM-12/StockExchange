@@ -29,7 +29,7 @@
         var j = -1;
         r[++j] = 'Current exchange rates are from: ';
         r[++j] = obj.publicationDate;
-        r[++j] = '<table id="stocksTable" class="table table-bordered"><thead><tr><th>Company</th><th>Value</th><th>Actions</th></tr></thead>';
+        r[++j] = '<table id="stocksTable" class="table table-bordered"><thead><tr><th>Company</th><th>Value [PLN]</th><th>Actions</th></tr></thead>';
 
         for (var i in obj.items) {
             var item = obj.items[i];

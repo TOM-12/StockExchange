@@ -1,7 +1,10 @@
 package org.t.stock.web.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import org.joda.time.DateTime;
 import org.springframework.format.annotation.NumberFormat;
 import org.t.stock.model.stock.WalletStock;
@@ -10,12 +13,23 @@ import org.t.stock.model.stock.WalletStock;
  *
  * @author TOM
  */
-public class RegisterForm {
+public class RegisterForm implements Serializable {
 
+    private static final long serialVersionUID = -9044886138277306745L;
+
+    @Size(min = 1, max = 45)
+    @NotNull
     private String firstName;
+    @Size(min = 1, max = 45)
+    @NotNull
     private String lastName;
+    @Size(min = 5, max = 45)
     private String login;
+    @Size(min = 5, max = 45) 
     private String password;
+    @Size(min = 5, max = 45)
+    @NotNull
+    private String confirmPassword;
 
     @NumberFormat(pattern = "0.00", style = NumberFormat.Style.CURRENCY)
     private BigDecimal money;
@@ -25,7 +39,7 @@ public class RegisterForm {
     public RegisterForm() {
     }
 
-    public RegisterForm(String firstName, String lastName, String login, String password, BigDecimal money, ArrayList<WalletStock> walletStocks, DateTime publicationDate) {
+    public RegisterForm(String firstName, String lastName, String login, String password, String confirmPassword, BigDecimal money, ArrayList<WalletStock> walletStocks, DateTime publicationDate) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.login = login;
@@ -33,6 +47,7 @@ public class RegisterForm {
         this.money = money;
         this.walletStocks = walletStocks;
         this.publicationDate = publicationDate;
+        this.confirmPassword = confirmPassword;
     }
 
     public String getFirstName() {
@@ -67,6 +82,14 @@ public class RegisterForm {
         this.password = password;
     }
 
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
     public BigDecimal getMoney() {
         return money;
     }
@@ -97,6 +120,7 @@ public class RegisterForm {
         private String lastName;
         private String login;
         private String password;
+        private String confirmPassword;
         private BigDecimal money;
         private ArrayList<WalletStock> walletStocks;
         private DateTime publicationDate;
@@ -124,6 +148,11 @@ public class RegisterForm {
             return this;
         }
 
+        public RegisterFormBuilder setConfirmPasswordPassword(String confirmPassword) {
+            this.confirmPassword = confirmPassword;
+            return this;
+        }
+
         public RegisterFormBuilder setMoney(BigDecimal money) {
             this.money = money;
             return this;
@@ -140,7 +169,7 @@ public class RegisterForm {
         }
 
         public RegisterForm createRegisterForm() {
-            return new RegisterForm(firstName, lastName, login, password, money, walletStocks, publicationDate);
+            return new RegisterForm(firstName, lastName, login, password, confirmPassword, money, walletStocks, publicationDate);
         }
 
     }
