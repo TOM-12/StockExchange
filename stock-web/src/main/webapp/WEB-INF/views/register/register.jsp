@@ -17,6 +17,11 @@
 <form:form method="POST" modelAttribute="registerForm" id="registerForm" role="form">
     <sec:csrfInput />
     <div class="form-group row">
+        <div class="col-md-6 col-md-offset-3">
+            <form:errors  path="*" cssClass="error"/>
+        </div>
+    </div>
+    <div class="form-group row">
         <form:label  path="firstName"  cssClass="control-label col-md-1 col-md-offset-4">First name:</form:label>
             <div class="col-md-3">
             <form:input  id="userFirstName" path="firstName" cssClass="form-control" placeholder="First name" cssErrorClass="form-control error" maxlength="45"/>
@@ -57,7 +62,9 @@
     </div>
     <div class="form-group row">
         <div class="col-md-6 col-md-offset-3 panel panel-default">
-            <div class="row center-block" style="text-align: center">
+            <div class="row center-block" style="text-align: center"><button role="group" id="submit" type="button" class="btn btn-secondary- btn-md" onclick="location.href = '${pageContext.request.contextPath}/register ';">
+                    <i class="fa fa-refresh"></i>
+                </button>
                 <label>Wallet (Exchange rates from ${registerForm.publicationDate}):</label>
             </div>
 

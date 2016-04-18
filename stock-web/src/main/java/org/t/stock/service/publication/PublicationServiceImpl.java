@@ -22,6 +22,7 @@ public class PublicationServiceImpl implements PublicationService {
     PublicationsDAO publicationsDAOImpl;
 
     @Override
+    @Transactional(readOnly = true)
     public Publication<Stock> getCurrentExchangeRate() {
         return publicationsDAOImpl.getCurrentExchangeRate();
     }
