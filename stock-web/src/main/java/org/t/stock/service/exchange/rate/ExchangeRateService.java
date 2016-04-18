@@ -35,8 +35,8 @@ public class ExchangeRateService {
         LOGGER.debug("updatePublications");
 
         Publication publication = exchangeFPPublicationClient.getPublication();
-        if (null != publication) {
-            status = true;
+        status = (null != publication);
+        if (status) {
             LOGGER.debug("status: " + status);
             if (null == publicationDateTime || publicationDateTime.getMillis() != (publication.getPublicationDate().getMillis())) {
                 publicationDateTime = publication.getPublicationDate();

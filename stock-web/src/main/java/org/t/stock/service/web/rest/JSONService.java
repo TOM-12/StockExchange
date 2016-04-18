@@ -72,10 +72,10 @@ public class JSONService {
                 wallet = null;
             } else {
                 String username = ((UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-                LOGGER.debug(username);
                 try {
                     wallet = stockExchangeServiceImpl.getUserWallet(username);
                 } catch (Exception e) {
+                    LOGGER.catching(e);
                     wallet = null;
                 }
             }

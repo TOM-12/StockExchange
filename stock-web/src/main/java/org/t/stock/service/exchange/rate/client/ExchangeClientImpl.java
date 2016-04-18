@@ -4,8 +4,10 @@ import org.springframework.stereotype.Repository;
 import org.t.stock.model.Publication;
 import org.t.stock.model.stock.PublicationStock;
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
+import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
@@ -35,8 +37,13 @@ public class ExchangeClientImpl implements ExchangeClient {
         Client client = Client.create(clientConfig);
 
         WebResource webResourceGet = client.resource(REST_SERVICE_URL);
-        ClientResponse response = webResourceGet.get(ClientResponse.class);
-
+        ClientResponse response;
+        try {
+            response = webResourceGet.get(ClientResponse.class);
+        } catch (ClientHandlerException | UniformInterfaceException exception) {
+            LOGGER.error("cannot connect to publications server", exception);
+            return null;
+        }
         if (response.getStatus() != 200) {
             LOGGER.error("cannot connect to publications server");
             return null;

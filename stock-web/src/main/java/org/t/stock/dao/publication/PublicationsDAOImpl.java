@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.sql.DataSource;
 import org.apache.logging.log4j.LogManager;
@@ -142,7 +143,8 @@ public class PublicationsDAOImpl implements PublicationsDAO {
                 .append(" publications.ID_PUBLICATION \n")
                 .append(" FROM stocks , publications \n")
                 .append(" WHERE 1=1 \n")
-                .append(" AND PUB_DATE = (SELECT MAX(PUB_DATE) FROM publications) \n");
+                .append(" AND PUB_DATE = (SELECT MAX(PUB_DATE) FROM publications) \n")
+                .append(" ORDER BY stocks.code ASC \n");
 
         final ArrayList<Stock> stocks = new ArrayList<>(jdbcTemplate.query(selectStockSql.toString(), new StockMapper()));
 
@@ -169,7 +171,7 @@ public class PublicationsDAOImpl implements PublicationsDAO {
                     }
                 })
         );
-        Map<String, Stock> map = new HashMap<>(0);
+        Map<String, Stock> map = new LinkedHashMap<>(0);
         for (Stock stock : stocks) {
             map.put(stock.getCode(), stock);
         }

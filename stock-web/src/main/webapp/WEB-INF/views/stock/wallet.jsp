@@ -6,5 +6,9 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <div>
-wallet
+    <div>
+        <h2>My wallet</h2>
+    </div>
+    <div id="wallet">
+    </div>
 </div>

@@ -8,13 +8,9 @@
 
 <div>
 
-    <hr/>
-    <div id="test">
+    <div>
+        <h2>Stock prices</h2>
     </div>
-    <hr/>
-    <div id="test2">
-    </div>
-    <hr/>
     <div id="curentStock">
     </div>
 

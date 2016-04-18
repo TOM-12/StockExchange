@@ -10,7 +10,7 @@
         <div class="col-sm-10 row">
             <sec:authentication property="principal.firstName" var="firstName" />
             <sec:authentication property="principal.lastName" var="lastName" />
-            <div class="col-sm-offset-7 col-sm-3">             
+            <div class="col-sm-10" style="text-align: right">             
                 <h2>Logged in as ${firstName} ${lastName}</h2>
             </div>  
             <div class="col-sm-1">

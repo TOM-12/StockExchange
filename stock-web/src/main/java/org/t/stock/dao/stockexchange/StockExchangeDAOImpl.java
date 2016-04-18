@@ -115,7 +115,8 @@ public class StockExchangeDAOImpl implements StockExchangeDAO {
                 .append(" wallet_stocks.AMOUNT\n")
                 .append(" FROM wallet_stocks JOIN stocks ON wallet_stocks.CODE = stocks.CODE\n")
                 .append(" WHERE 1=1\n")
-                .append(" AND wallet_stocks.WALLET_ID= ?");
+                .append(" AND wallet_stocks.WALLET_ID= ?")
+                .append(" ORDER BY stocks.code ASC \n");
 
         List<WalletStock> walletStocks = jdbcTemplate.query(getWalletStocksSql.toString(), new PreparedStatementSetter() {
             @Override
