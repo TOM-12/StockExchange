@@ -10,6 +10,8 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -17,6 +19,8 @@ import com.sun.jersey.api.json.JSONConfiguration;
  */
 @Repository(value = "exchangeFPPublicationClient")
 public class ExchangeClientImpl implements ExchangeClient {
+
+    private static final Logger LOGGER = LogManager.getLogger(ExchangeClientImpl.class.getName());
 
     private static final String REST_SERVICE_URL = "http://webtask.future-processing.com:8068/stocks";
 
@@ -33,6 +37,7 @@ public class ExchangeClientImpl implements ExchangeClient {
         ClientResponse response = webResourceGet.get(ClientResponse.class);
 
         if (response.getStatus() != 200) {
+            LOGGER.error("cannot connect to publications server");
             return null;
         }
 

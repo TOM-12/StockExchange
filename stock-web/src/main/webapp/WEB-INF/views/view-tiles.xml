@@ -12,7 +12,12 @@
     
 
     <definition name="registerPageDefinition" extends="noMenuLayoutViewDefinitions">
-        <put-attribute name="body" value="/WEB-INF/views/register.jsp" />
+        <put-attribute name="body" value="/WEB-INF/views/register/register.jsp" />
+        <put-attribute name="title" value="Register"  cascade="true"/>  
+    </definition>
+    
+    <definition name="registerSuccessPageDefinition" extends="noMenuLayoutViewDefinitions">
+        <put-attribute name="body" value="/WEB-INF/views/register/success.jsp" />
         <put-attribute name="title" value="Register"  cascade="true"/>  
     </definition>
 

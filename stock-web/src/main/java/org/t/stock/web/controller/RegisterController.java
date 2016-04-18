@@ -65,13 +65,26 @@ public class RegisterController {
     @RequestMapping(value = {"/register"}, method = RequestMethod.POST)
     public ModelAndView registerSubmit(@Valid RegisterForm registerForm, BindingResult result, SessionStatus status) {
         System.out.println("org.t.stock.web.controller.RegisterController.registerSubmit()");
-        registerFormValidator.validate(registerForm, result);
 
-        if (!result.hasErrors()) {
-            status.setComplete();
+        if (result.hasErrors()) {
+            return new ModelAndView("registerPageDefinition",
+                    "registerForm", registerForm);
+        } else {
+            registerFormValidator.validate(registerForm, result);
+            if (result.hasErrors()) {
+                return new ModelAndView("registerPageDefinition",
+                        "registerForm", registerForm);
+            } else {
+                status.setComplete();
+                return new ModelAndView("registerSuccessPageDefinition")
+                        .addObject("firstName", registerForm.getFirstName())
+                        .addObject("lastName", registerForm.getLastName())
+                        .addObject("login", registerForm.getLogin());
+            }
         }
-        return new ModelAndView("registerPageDefinition",
-                "registerForm", registerForm);
+        
+        
+        
     }
 
 }

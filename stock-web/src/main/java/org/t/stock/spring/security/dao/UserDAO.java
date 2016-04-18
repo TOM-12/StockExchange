@@ -1,4 +1,3 @@
-
 package org.t.stock.spring.security.dao;
 
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,5 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 public interface UserDAO {
 
     UserDetails loadUserByUsername(final String username);
-    
+
+    public boolean checkIUserExists(final String login);
 }

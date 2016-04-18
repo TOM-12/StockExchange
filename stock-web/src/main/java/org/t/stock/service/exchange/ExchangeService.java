@@ -38,12 +38,22 @@ public class ExchangeService {
         LOGGER.debug("updatePublications");
 
         Publication publication = exchangeFPPublicationClient.getPublication();
-        status = (null != publication);
-        if (status
-                && (null == publicationDateTime || !publicationDateTime.isEqual(publication.getPublicationDate()))) {
-            publicationDateTime = publication.getPublicationDate();
+        if (null != publication) {
+            status=true;
+            LOGGER.debug("status: " + status);
+            if (null == publicationDateTime || publicationDateTime.getMillis() != (publication.getPublicationDate().getMillis())) {
+                publicationDateTime = publication.getPublicationDate();
 
-            status = publicationServiceImpl.insertPublication(publication);
+                LOGGER.debug("start insert");
+                try {
+                    status = publicationServiceImpl.insertPublication(publication);
+                } catch (Exception ex) {
+                    LOGGER.warn("Unsuccesful database update");
+                    LOGGER.catching(ex);
+                    status = false;
+                }
+                LOGGER.debug("status: " + status);
+            }
         }
     }
 

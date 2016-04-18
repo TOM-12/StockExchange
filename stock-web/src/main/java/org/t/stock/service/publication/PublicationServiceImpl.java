@@ -17,6 +17,7 @@ import org.t.stock.model.stock.Stock;
 public class PublicationServiceImpl implements PublicationService {
 
     private static final Logger LOGGER = LogManager.getLogger(PublicationServiceImpl.class.getName());
+
     @Autowired
     PublicationsDAO publicationsDAOImpl;
 
@@ -26,17 +27,22 @@ public class PublicationServiceImpl implements PublicationService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public boolean insertPublication(Publication publication) {
-
-        long publicationID = publicationsDAOImpl.insertPublicationData(publication.getPublicationDate());
-        if (0L == publicationID) {
-            return false;
-        } else {
-            publicationsDAOImpl.insertPublishedStocks(publicationID, publication.getItems());
-            publicationsDAOImpl.updateStocksUnitPriceName(publicationID, publication.getItems());
-            return true;
+        try {
+            long publicationID = publicationsDAOImpl.insertPublicationData(publication.getPublicationDate());
+            if (0L == publicationID) {
+                LOGGER.warn("Publication not inserted");
+                return false;
+            } else {
+                publicationsDAOImpl.insertPublishedStocks(publicationID, publication.getItems());
+                publicationsDAOImpl.updateStocksUnitPriceName(publicationID, publication.getItems());
+            }
+        } catch (Exception ex) {
+            LOGGER.catching(ex);
+            throw ex;
         }
+        return true;
     }
 
 }

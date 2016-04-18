@@ -55,7 +55,6 @@
             <form:errors path="confirmPassword" cssClass="error" />
         </div>
     </div>
-            <form:errors  path="*"/>
     <div class="form-group row">
         <div class="col-md-6 col-md-offset-3 panel panel-default">
             <div class="row center-block" style="text-align: center">
@@ -97,7 +96,11 @@
             <form:errors path="money" cssClass="error" />
         </div>
     </div>
-
+    <div class="form-group row">
+        <div class="col-md-6 col-md-offset-3">
+            <form:errors  path="*" cssClass="error"/>
+        </div>
+    </div>
     <div class="form-group row text-center ">
         <div class="btn-group btn-group-md" role="group" >
             <button role="group" id="submit" type="button" class="btn btn-secondary- btn-md" onclick="location.href = '${pageContext.request.contextPath}/index ';">

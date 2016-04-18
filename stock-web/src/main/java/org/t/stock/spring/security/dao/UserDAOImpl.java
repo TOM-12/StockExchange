@@ -75,4 +75,16 @@ public class UserDAOImpl implements UserDAO {
         return userDetails;
     }
 
+    @Override
+    public boolean checkIUserExists(final String login) {
+        StringBuilder sql = new StringBuilder()
+                .append("SELECT \n")
+                .append(" COUNT(*) \n ")
+                .append(" FROM users \n")
+                .append(" WHERE 1=1 \n")
+                .append(" AND LOGIN =  ?");
+
+        Integer count = jdbcTemplate.queryForObject(sql.toString(), Integer.class, login);
+        return null != count && count > 0;
+    }
 }

@@ -3,8 +3,8 @@ package org.t.stock.web.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
 import org.springframework.format.annotation.NumberFormat;
 import org.t.stock.model.stock.WalletStock;
@@ -17,18 +17,20 @@ public class RegisterForm implements Serializable {
 
     private static final long serialVersionUID = -9044886138277306745L;
 
+    @NotEmpty
     @Size(min = 1, max = 45)
-    @NotNull
     private String firstName;
+    @NotEmpty
     @Size(min = 1, max = 45)
-    @NotNull
     private String lastName;
+    @NotEmpty
     @Size(min = 5, max = 45)
     private String login;
-    @Size(min = 5, max = 45) 
-    private String password;
+    @NotEmpty
     @Size(min = 5, max = 45)
-    @NotNull
+    private String password;
+    @NotEmpty
+    @Size(min = 5, max = 45)
     private String confirmPassword;
 
     @NumberFormat(pattern = "0.00", style = NumberFormat.Style.CURRENCY)
