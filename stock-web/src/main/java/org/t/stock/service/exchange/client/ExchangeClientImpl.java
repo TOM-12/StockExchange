@@ -12,6 +12,7 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.t.stock.model.FPPublication;
 
 /**
  *
@@ -27,7 +28,7 @@ public class ExchangeClientImpl implements ExchangeClient {
     @Override
     public Publication<PublicationStock> getPublication() {
 
-        Publication<PublicationStock> publication = null;
+        Publication<PublicationStock> publication = new Publication<>();
 
         ClientConfig clientConfig = new DefaultClientConfig();
         clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
@@ -41,9 +42,11 @@ public class ExchangeClientImpl implements ExchangeClient {
             return null;
         }
 
-        publication = response.getEntity(new GenericType< Publication<PublicationStock>>() {
-        });
-
+        FPPublication entity = response.getEntity(FPPublication.class);
+        for (PublicationStock stock : entity.getItems()) {
+            publication.getItems().put(stock.getCode(), stock);
+        }
+        publication.setPublicationDate(entity.getPublicationDate());
         return publication;
     }
 

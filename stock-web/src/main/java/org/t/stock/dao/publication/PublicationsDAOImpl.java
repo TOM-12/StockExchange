@@ -1,4 +1,4 @@
-package org.t.stock.dao;
+package org.t.stock.dao.publication;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,21 +6,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import javax.sql.DataSource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ParameterizedPreparedStatementSetter;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import org.t.stock.model.Publication;
 import org.t.stock.model.mapper.StockMapper;
 import org.t.stock.model.stock.PublicationStock;
@@ -42,6 +43,7 @@ public class PublicationsDAOImpl implements PublicationsDAO {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
+    @Override
     public long insertPublicationData(final DateTime publicationDate) {
         final StringBuilder insertPublicationSql = new StringBuilder()
                 .append(" INSERT INTO publications \n")
@@ -56,7 +58,7 @@ public class PublicationsDAOImpl implements PublicationsDAO {
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                PreparedStatement ps = con.prepareStatement(insertPublicationSql.toString(), new String[]{"ID"});
+                PreparedStatement ps = con.prepareStatement(insertPublicationSql.toString(), new String[]{"ID_PUBLICATION"});
                 ps.setTimestamp(1, new Timestamp(publicationDate.getMillis()));
                 return ps;
             }
@@ -67,7 +69,8 @@ public class PublicationsDAOImpl implements PublicationsDAO {
         return keyHolder.getKey().longValue();
     }
 
-    public void insertPublishedStocks(final long publicationID, final ArrayList<PublicationStock> items) {
+    @Override
+    public void insertPublishedStocks(final long publicationID, final Map<String, PublicationStock> items) {
         final StringBuilder insertPubStocksSql = new StringBuilder()
                 .append(" INSERT INTO  pub_stocks \n")
                 .append("( \n")
@@ -85,26 +88,23 @@ public class PublicationsDAOImpl implements PublicationsDAO {
                 .append(" ? \n")
                 .append(" ) \n");
 
-        jdbcTemplate.batchUpdate(insertPubStocksSql.toString(), new BatchPreparedStatementSetter() {
+        jdbcTemplate.batchUpdate(insertPubStocksSql.toString(), items.values(), items.size(), new ParameterizedPreparedStatementSetter<PublicationStock>() {
             @Override
-            public void setValues(PreparedStatement ps, int i) throws SQLException {
-                PublicationStock stock = items.get(i);
-                ps.setString(1, stock.getName());
-                ps.setString(2, stock.getCode());
-                ps.setInt(3, stock.getUnit());
-                ps.setBigDecimal(4, stock.getPrice());
-                ps.setLong(5, publicationID);
-            }
-
-            @Override
-            public int getBatchSize() {
-                return items.size();
+            public void setValues(PreparedStatement ps, PublicationStock argument) throws SQLException {
+                if (null != argument) {
+                    ps.setString(1, argument.getName());
+                    ps.setString(2, argument.getCode());
+                    ps.setInt(3, argument.getUnit());
+                    ps.setBigDecimal(4, argument.getPrice());
+                    ps.setLong(5, publicationID);
+                }
             }
         });
 
     }
 
-    public void updateStocksUnitPriceName(final long publicationID, final ArrayList<PublicationStock> items) {
+    @Override
+    public void updateStocksUnitPriceName(final long publicationID, final Map<String, PublicationStock> items) {
         final StringBuilder updateStocksSql = new StringBuilder()
                 .append(" UPDATE stocks SET \n")
                 .append(" NAME = ? ,\n")
@@ -114,20 +114,16 @@ public class PublicationsDAOImpl implements PublicationsDAO {
                 .append("WHERE 1=1 \n")
                 .append(" AND CODE = ?  \n");
 
-        jdbcTemplate.batchUpdate(updateStocksSql.toString(), new BatchPreparedStatementSetter() {
+        jdbcTemplate.batchUpdate(updateStocksSql.toString(), items.values(), items.size(), new ParameterizedPreparedStatementSetter<PublicationStock>() {
             @Override
-            public void setValues(PreparedStatement ps, int i) throws SQLException {
-                PublicationStock stock = items.get(i);
-                ps.setString(1, stock.getName());
-                ps.setInt(2, stock.getUnit());
-                ps.setBigDecimal(3, stock.getPrice());
-                ps.setLong(4, publicationID);
-                ps.setString(5, stock.getCode());
-            }
-
-            @Override
-            public int getBatchSize() {
-                return items.size();
+            public void setValues(PreparedStatement ps, PublicationStock argument) throws SQLException {
+                if (null != argument) {
+                    ps.setString(1, argument.getName());
+                    ps.setInt(2, argument.getUnit());
+                    ps.setBigDecimal(3, argument.getPrice());
+                    ps.setLong(4, publicationID);
+                    ps.setString(5, argument.getCode());
+                }
             }
         });
     }
@@ -173,7 +169,11 @@ public class PublicationsDAOImpl implements PublicationsDAO {
                     }
                 })
         );
-        publication.setItems(stocks);
+        Map<String, Stock> map = new HashMap<>(0);
+        for (Stock stock : stocks) {
+            map.put(stock.getCode(), stock);
+        }
+        publication.setItems(map);
 
         return publication;
     }

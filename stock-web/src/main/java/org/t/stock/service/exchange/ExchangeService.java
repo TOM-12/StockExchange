@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.t.stock.dao.PublicationsDAO;
+import org.t.stock.dao.publication.PublicationsDAO;
 import org.t.stock.model.Publication;
 import org.t.stock.model.stock.PublicationStock;
 import org.t.stock.service.exchange.client.ExchangeClient;

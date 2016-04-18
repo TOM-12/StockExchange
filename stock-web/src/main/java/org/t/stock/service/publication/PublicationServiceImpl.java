@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.t.stock.dao.PublicationsDAO;
+import org.t.stock.dao.publication.PublicationsDAO;
 import org.t.stock.model.Publication;
 import org.t.stock.model.stock.Stock;
 

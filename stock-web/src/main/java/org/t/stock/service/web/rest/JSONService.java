@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.t.stock.model.AjaxResponse;
 import org.t.stock.model.Publication;
 import org.t.stock.model.stock.Stock;
+import org.t.stock.service.exchange.ExchangeService;
 import org.t.stock.service.publication.PublicationService;
 import org.t.stock.service.publication.PublicationServiceImpl;
 
@@ -56,7 +58,22 @@ public class JSONService {
         } catch (IOException ex) {
             Logger.getLogger(JSONService.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.err.println(string);
+        return string;
+    }
+
+    @RequestMapping(value = "/stock/ajax", method = RequestMethod.GET)
+    public String getForUser() {
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setDateFormat(new SimpleDateFormat());
+        
+        AjaxResponse ajaxResponse = new AjaxResponse(ExchangeService.getStatus(), publicationServiceImpl.getCurrentExchangeRate(), null);
+        String string = null;
+        try {
+            string = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(ajaxResponse);
+        } catch (IOException ex) {
+            Logger.getLogger(JSONService.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return string;
     }
 }

@@ -2,18 +2,15 @@ package org.t.stock.web.controller;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Map;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
@@ -46,16 +43,20 @@ public class RegisterController {
 
         Publication<Stock> currentExchangeRate = publicationServiceImpl.getCurrentExchangeRate();
         ArrayList<WalletStock> walletStocks = new ArrayList<>(0);
-        for (Stock stock : currentExchangeRate.getItems()) {
-            walletStocks.add(new WalletStock.WalletStockBuilder()
-                    .setCode(stock.getCode())
-                    .setAvailable(stock.getAvailable())
-                    .setName(stock.getName())
-                    .setPrice(stock.getPrice())
-                    .setUnit(stock.getUnit())
-                    .createWalletStock()
-            );
+        for (Map.Entry<String, Stock> entry : currentExchangeRate.getItems().entrySet()) {
+            Stock value = entry.getValue();
+            if (null != value) {
+                walletStocks.add(new WalletStock.WalletStockBuilder()
+                        .setCode(value.getCode())
+                        .setAvailable(value.getAvailable())
+                        .setName(value.getName())
+                        .setPrice(value.getPrice())
+                        .setUnit(value.getUnit())
+                        .createWalletStock()
+                );
+            }
         }
+
         RegisterForm registerForm = new RegisterForm.RegisterFormBuilder()
                 .setMoney(BigDecimal.ZERO)
                 .setPublicationDate(currentExchangeRate.getPublicationDate())
@@ -75,15 +76,18 @@ public class RegisterController {
         Publication<Stock> currentExchangeRate = publicationServiceImpl.getCurrentExchangeRate();
         if (currentExchangeRate.getPublicationDate().getMillis() != registerForm.getPublicationDate().getMillis()) {
             ArrayList<WalletStock> walletStocks = new ArrayList<>(0);
-            for (Stock stock : currentExchangeRate.getItems()) {
-                walletStocks.add(new WalletStock.WalletStockBuilder()
-                        .setCode(stock.getCode())
-                        .setAvailable(stock.getAvailable())
-                        .setName(stock.getName())
-                        .setPrice(stock.getPrice())
-                        .setUnit(stock.getUnit())
-                        .createWalletStock()
-                );
+            for (Map.Entry<String, Stock> entry : currentExchangeRate.getItems().entrySet()) {
+                Stock value = entry.getValue();
+                if (null != value) {
+                    walletStocks.add(new WalletStock.WalletStockBuilder()
+                            .setCode(value.getCode())
+                            .setAvailable(value.getAvailable())
+                            .setName(value.getName())
+                            .setPrice(value.getPrice())
+                            .setUnit(value.getUnit())
+                            .createWalletStock()
+                    );
+                }
             }
             registerForm.setWalletStocks(walletStocks);
             registerForm.setPublicationDate(currentExchangeRate.getPublicationDate());
@@ -93,19 +97,22 @@ public class RegisterController {
         if (!result.hasErrors()) {
             registerFormValidator.validate(registerForm, result);
             if (!result.hasErrors()) {
-                if (userServiceImpl.createUser(registerForm)) {
+                try {
+                    userServiceImpl.createUser(registerForm);
+
                     status.setComplete();
                     return new ModelAndView("registerSuccessPageDefinition")
                             .addObject("firstName", registerForm.getFirstName())
                             .addObject("lastName", registerForm.getLastName())
                             .addObject("login", registerForm.getLogin());
-                } else {
+                } catch (Exception ex) {
                     result.addError(new ObjectError("registerForm", "User couldnt be created. Please try again later."));
                 }
             }
         }
 
-        return new ModelAndView("registerPageDefinition",
+        return new ModelAndView(
+                "registerPageDefinition",
                 "registerForm", registerForm);
 
     }

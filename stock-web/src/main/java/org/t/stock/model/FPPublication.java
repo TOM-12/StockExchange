@@ -3,22 +3,21 @@ package org.t.stock.model;
 import java.io.Serializable;
 import org.t.stock.model.stock.BaseStock;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import org.joda.time.DateTime;
+import org.t.stock.model.stock.PublicationStock;
 
 /**
  *
  * @author TOM
  */
-public class Publication<T extends BaseStock> implements Serializable {
+public class FPPublication implements Serializable {
 
     private static final long serialVersionUID = -1830089485896819658L;
 
     private DateTime publicationDate;
-    private Map<String, T> items;
+    private ArrayList<PublicationStock> items;
 
-    public Publication() {
+    public FPPublication() {
     }
 
     public DateTime getPublicationDate() {
@@ -29,14 +28,11 @@ public class Publication<T extends BaseStock> implements Serializable {
         this.publicationDate = publicationDate;
     }
 
-    public Map<String, T> getItems() {
-        if (items == null) {
-            items = new HashMap<>(0);
-        }
+    public ArrayList<PublicationStock> getItems() {
         return items;
     }
 
-    public void setItems(Map<String, T> items) {
+    public void setItems(ArrayList<PublicationStock> items) {
         this.items = items;
     }
 

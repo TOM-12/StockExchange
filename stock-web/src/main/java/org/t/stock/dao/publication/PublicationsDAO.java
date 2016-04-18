@@ -1,8 +1,7 @@
-package org.t.stock.dao;
+package org.t.stock.dao.publication;
 
-import java.util.ArrayList;
+import java.util.Map;
 import org.joda.time.DateTime;
-import org.springframework.transaction.annotation.Transactional;
 import org.t.stock.model.Publication;
 import org.t.stock.model.stock.PublicationStock;
 import org.t.stock.model.stock.Stock;
@@ -17,8 +16,8 @@ public interface PublicationsDAO {
 
     long insertPublicationData(final DateTime publicationDate);
 
-    void insertPublishedStocks(final long publicationID, final ArrayList<PublicationStock> items);
+    void insertPublishedStocks(final long publicationID, final Map<String, PublicationStock> items);
 
-    void updateStocksUnitPriceName(final long publicationID, final ArrayList<PublicationStock> items);
+    void updateStocksUnitPriceName(final long publicationID, final Map<String, PublicationStock> items);
 
 }

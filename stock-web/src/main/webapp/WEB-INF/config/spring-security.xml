@@ -53,7 +53,7 @@
         </authentication-provider>
     </authentication-manager>-->
 
-    <beans:bean id="userService" class="org.t.stock.spring.security.service.UserService" ></beans:bean>
+    <beans:bean id="userService" class="org.t.stock.spring.security.service.UserServiceImpl" ></beans:bean>
     
     <authentication-manager>
         <authentication-provider user-service-ref="userService">
