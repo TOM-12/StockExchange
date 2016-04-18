@@ -34,4 +34,28 @@ public class StockExchangeServiceImpl implements StockExchangeService {
         }
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void buyStock(String username, long stockId, long stockAmount) {
+        try {
+            stockExchangeDAOImpl.buyStock(username,stockId,stockAmount);
+
+        } catch (Exception e) {
+            LOGGER.catching(e);
+            throw e;
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void sellStock(String username, long stockId, long stockAmount) {
+        try {
+            stockExchangeDAOImpl.sellStock(username,stockId,stockAmount);
+
+        } catch (Exception e) {
+            LOGGER.catching(e);
+            throw e;
+        }
+    }
+
 }

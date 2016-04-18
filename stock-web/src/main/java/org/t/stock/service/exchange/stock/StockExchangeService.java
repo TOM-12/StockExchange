@@ -12,4 +12,10 @@ public interface StockExchangeService {
     @Transactional
     public Wallet getUserWallet(String username);
 
+    @Transactional
+    public void buyStock(String username, long stockId, long stockAmount);
+
+    @Transactional
+    public void sellStock(String username, long stockId, long stockAmount);
+
 }

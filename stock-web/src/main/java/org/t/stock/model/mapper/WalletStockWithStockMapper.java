@@ -1,6 +1,7 @@
 package org.t.stock.model.mapper;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,7 +29,7 @@ public class WalletStockWithStockMapper implements RowMapper<WalletStock> {
         walletStock.setValue(
                 new BigDecimal(walletStock.getWalletAmount())
                 .divide(new BigDecimal(walletStock.getUnit()), 4, RoundingMode.HALF_DOWN)
-                .multiply(walletStock.getPrice())
+                .multiply(walletStock.getPrice(), new MathContext(4, RoundingMode.HALF_DOWN))
         );
 
         return walletStock;
