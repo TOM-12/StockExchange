@@ -63,7 +63,7 @@
 </div>
 
 <button  name="foo" value="upvote" onclick="post();">Upvote</button>
-<div id="dialogs"></div>
+<div id="buy-dialogs"></div>
 <script>
 
 </script>

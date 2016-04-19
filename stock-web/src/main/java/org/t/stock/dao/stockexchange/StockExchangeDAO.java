@@ -19,7 +19,7 @@ public interface StockExchangeDAO {
 
     public List<WalletStock> getWalletStocks(final long id);
 
-    public Stock getStockInfo(final long stockId);
+    public Stock getStockInfo(final long stockId, final boolean isFromStocks);
 
     public BigDecimal getAvailableMoneyInWallet(final String username);
 

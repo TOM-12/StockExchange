@@ -43,7 +43,7 @@ public class StockExchangeServiceImpl implements StockExchangeService {
     @Transactional(rollbackFor = Exception.class)
     public TransactionStatusEnum buyStock(final String username, final long stockId, final long stockAmountToBuy) {
         if (ExchangeRateService.getStatus()) {
-            Stock stock = stockExchangeDAOImpl.getStockInfo(stockId);
+            Stock stock = stockExchangeDAOImpl.getStockInfo(stockId, true);
 
             if (stock.getAvailable() < (stockAmountToBuy * stock.getUnit())) {
                 return TransactionStatusEnum.NOT_AVAILABLE;
@@ -79,7 +79,7 @@ public class StockExchangeServiceImpl implements StockExchangeService {
                 if (stockAmountToSell > stockInWallet) {
                     return TransactionStatusEnum.TOO_MUCH;
                 } else {
-                    Stock stock = stockExchangeDAOImpl.getStockInfo(walletStockId);
+                    Stock stock = stockExchangeDAOImpl.getStockInfo(walletStockId, false);
                     BigDecimal transactionValue = new BigDecimal(stockAmountToSell)
                             .multiply(stock.getPrice());
 

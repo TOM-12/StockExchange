@@ -72,7 +72,8 @@ public class StockController {
         return result;
     }
 
-    @RequestMapping(value = {"/stock/sell"}, method = {RequestMethod.POST})
+    @RequestMapping(value = {"/stock/sell"}, method = {RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
     public String sellStock(@RequestParam long stockId, @RequestParam long stockAmount) {
         TransactionStatusEnum transactionStatus;
         if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {

@@ -133,19 +133,23 @@ public class StockExchangeDAOImpl implements StockExchangeDAO {
     }
 
     @Override
-    public Stock getStockInfo(final long stockId) {
+    public Stock getStockInfo(final long stockId, final boolean isFromStocks) {
         StringBuilder getStockInfoSql = new StringBuilder()
                 .append("SELECT\n")
-                .append("    ID_STOCK,\n")
-                .append("    CODE,\n")
-                .append("    NAME,\n")
-                .append("    UNIT,\n")
-                .append("    PRICE,\n")
-                .append("    AVAILABLE,\n")
-                .append("    LAST_PUB_ID\n")
+                .append("    stocks.ID_STOCK,\n")
+                .append("    stocks.CODE,\n")
+                .append("    stocks.NAME,\n")
+                .append("    stocks.UNIT,\n")
+                .append("    stocks.PRICE,\n")
+                .append("    stocks.AVAILABLE,\n")
+                .append("    stocks.LAST_PUB_ID\n")
                 .append("FROM stocks\n")
-                .append("WHERE 1=1\n")
-                .append("AND ID_STOCK =?");
+                .append("WHERE 1=1\n");
+        if (isFromStocks) {
+            getStockInfoSql.append("AND stocks.ID_STOCK =?");
+        } else {
+            getStockInfoSql.append("AND stocks.ID_STOCK = (SELECT ID_STOCK FROM stocks WHERE stocks.CODE = (SELECT wallet_stocks.CODE FROM wallet_stocks WHERE wallet_stocks.ID_WALLET_STOCKS = ? ))");
+        }
 
         Stock stock = jdbcTemplate.queryForObject(getStockInfoSql.toString(), new Object[]{stockId}, new StockMapper());
 
@@ -253,17 +257,24 @@ public class StockExchangeDAOImpl implements StockExchangeDAO {
 
     @Override
     public void sellStock(final String username, final long walletStockId, final long stockAmountToSell) {
+
+        StringBuilder getStockIdFromWalletStockIdSql = new StringBuilder()
+                .append("SELECT stocks.UNIT FROM stocks WHERE stocks.CODE = (SELECT wallet_stocks.CODE FROM wallet_stocks WHERE wallet_stocks.ID_WALLET_STOCKS = ?)");
+
+        final long baseUnit = jdbcTemplate.queryForObject(getStockIdFromWalletStockIdSql.toString(), new Object[]{walletStockId}, Long.class);
+
         StringBuilder sellSql = new StringBuilder()
                 .append("UPDATE wallet_stocks\n")
                 .append("SET\n")
-                .append("AMOUNT =  AMOUNT - ?\n")
+                .append("AMOUNT =  AMOUNT - ( ?* ?)\n")
                 .append("WHERE 1=1\n")
                 .append("AND ID_WALLET_STOCKS = ?");
         jdbcTemplate.update(sellSql.toString(), new PreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps) throws SQLException {
                 ps.setLong(1, stockAmountToSell);
-                ps.setLong(2, walletStockId);
+                ps.setLong(2, baseUnit);
+                ps.setLong(3, walletStockId);
             }
         });
 

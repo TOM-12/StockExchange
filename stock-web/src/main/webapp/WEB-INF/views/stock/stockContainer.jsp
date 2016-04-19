@@ -51,7 +51,11 @@
             r[++j] = item.value;
             r[++j] = '</td>';
             r[++j] = '<td>';
-            r[++j] = 'action';
+            r[++j] = '<button class="dialogSellOpen"id="sell-stock-';
+            r[++j] = item.id;
+            r[++j] = '" stock-idx="';
+            r[++j] = i;
+            r[++j] = '">Sell</button>';
             r[++j] = '</td>';
             r[++j] = '</tr>';
         }
@@ -65,7 +69,64 @@
         r[++j] = '</label>';
         r[++j] = '</div>';
         $('#wallet').html(r.join(''));
+
+        var d = new Array();
+        var di = -1;
+        for (var i in obj.stocks) {
+            var item = obj.stocks[i];
+            d[++di] = '<div id="sell-stock-dialog-' + i + '" style="display: none" title="title"><form><sec:csrfInput/>';
+            d[++di] = '<div><text>Sell (</text><input  name="amount" type="number" maxlength="11"/><text id="sell-dialog-' + i + '-text"></text></div>';
+            d[++di] = '<div><input type="checkbox" name="confirmation-checkbox" value="check">I confirm transaction.</div>';
+            d[++di] = '</form></div>';
+            $('#sell-stock-dialog-' + i + '.ui-dialog-content.ui-widget-content').find('text[id="sell-dialog-' + i + '-text"]').text(' x ' + item.unit + ') stocks per ' + item.price + ' PLN');
+        }
+        $('#sell-dialogs').html(d.join(''));
+
+        $('.dialogSellOpen').click(function () {
+            var id = $(this).attr('stock-idx');
+            var item = obj.stocks[id];
+            var title = 'Sell ' + item.code;
+            var $dialog = $("#sell-stock-dialog-" + id).dialog({
+                autoOpen: true,
+                resizable: false,
+                title: title,
+                height: 200,
+                modal: true,
+                width: "auto",
+                open: function (event, ui) {
+                    $(this).find('input[name="amount"]').val(0);
+                    $(this).find('text[id="sell-dialog-' + id + '-text"]').text(' x ' + item.unit + ') stocks per ' + item.price + ' PLN');
+                },
+                buttons: {
+                    "Sell"
+                            : function () {
+                                var id = item.id;
+                                var amount = $(this).find('input[name="amount"]').val();
+                                if ($(this).find('input[name="confirmation-checkbox"]').is(':checked')) {
+                                    if (Math.floor(amount) != amount || !$.isNumeric(amount)) {
+                                        return false;
+                                    } else {
+                                        if (amount === 0) {
+                                            return false;
+                                        } else {
+                                            sell(id, amount);
+                                            $(this).dialog("close");
+                                        }
+                                    }
+                                } else {
+                                    return  false;
+                                }
+                            }
+                },
+                close: function (event, ui) {
+                    $(this).dialog("destroy");
+                }
+            });
+            $dialog.dialog("open");
+        });
+
     }
+
     function populateCurrentRatesTable(obj, status) {
         var r = new Array();
         var j = -1;
@@ -99,8 +160,6 @@
         r[++j] = '</table>';
         $('#curentStock').html(r.join(''));
 
-
-
         var d = new Array();
         var di = -1;
         for (var i in obj.items) {
@@ -110,12 +169,10 @@
             d[++di] = '<div><input type="checkbox" name="confirmation-checkbox" value="check">I confirm transaction.</div>';
             d[++di] = '</form></div>';
             $('#buy-stock-dialog-' + item.code + '.ui-dialog-content.ui-widget-content').find('text[id="buy-dialog-' + item.id + '-text"]').text(' x ' + item.unit + ') stocks per ' + item.price + ' PLN');
-
         }
-        $('#dialogs').html(d.join(''));
+        $('#buy-dialogs').html(d.join(''));
 
         $('.dialogBuyOpen').click(function () {
-
             var item = obj.items[$(this).attr('stock-code')];
             var title = 'Buy ' + item.code;
             var $dialog = $("#buy-stock-dialog-" + $(this).attr('stock-code')).dialog({
@@ -162,6 +219,28 @@
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
         var url = '${pageContext.request.contextPath}/stock/buy?stockId=' + id + '&stockAmount=' + amount;
+        $.ajax({
+            dataType: 'json',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            type: 'POST',
+            url: url,
+            success: function (data) {
+                alert(data);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $('#curentStock').html("Connection to service failed");
+            },
+            complete: function () {
+            }
+        });
+    }
+
+    function sell(id, amount) {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        var url = '${pageContext.request.contextPath}/stock/sell?stockId=' + id + '&stockAmount=' + amount;
         $.ajax({
             dataType: 'json',
             beforeSend: function (xhr) {

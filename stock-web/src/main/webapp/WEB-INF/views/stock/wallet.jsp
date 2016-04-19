@@ -11,4 +11,6 @@
     </div>
     <div id="wallet">
     </div>
+    <div id="sell-dialogs"></div>
+<script>
 </div>
