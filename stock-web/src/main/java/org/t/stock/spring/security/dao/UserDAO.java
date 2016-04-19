@@ -13,7 +13,7 @@ public interface UserDAO {
 
     public boolean checkIUserExists(final String login);
 
-    public void createUser(String firstName, String lastName, String login, String password);
+    public void createUser(final String firstName, final String lastName, final String login, final String password);
 
-    public long createWallet(String login, BigDecimal money);
+    public long createWallet(final String login, final BigDecimal money);
 }

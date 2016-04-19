@@ -5,10 +5,12 @@ import java.text.SimpleDateFormat;
 import org.apache.logging.log4j.LogManager;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.t.stock.model.AjaxResponse;
 import org.t.stock.model.Publication;
@@ -48,7 +50,8 @@ public class JSONService {
         return string;
     }
 
-    @RequestMapping(value = "/stock/currentStock", method = RequestMethod.GET)
+    @RequestMapping(value = "/stock/currentStock", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
     public String getCurrentStock() {
 
         ObjectMapper mapper = new ObjectMapper();
@@ -63,7 +66,8 @@ public class JSONService {
         return string;
     }
 
-    @RequestMapping(value = "/stock/ajax", method = RequestMethod.GET)
+    @RequestMapping(value = "/stock/ajax", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
     public String getForUser() {
 
         Wallet wallet;

@@ -8,6 +8,7 @@
     function doAjax() {
         $.ajax({
             dataType: 'json',
+            timeout: 1000,
             url: '${pageContext.request.contextPath}/stock/ajax',
             type: 'GET',
             success: function (data) {
@@ -20,7 +21,7 @@
                 $('#curentStock').html("Connection to service failed");
             },
             complete: function () {
-                setTimeout(doAjax, 5000);
+                setTimeout(doAjax, 2000);
             }
         });
     }
@@ -87,53 +88,80 @@
             r[++j] = item.price;
             r[++j] = '</td>';
             r[++j] = '<td>';
-            r[++j] = '<button id="buy-stock-';
+            r[++j] = '<button class="dialogBuyOpen"id="buy-stock-';
             r[++j] = item.id;
+            r[++j] = '" stock-code="';
+            r[++j] = item.code;
             r[++j] = '">Buy</button>';
             r[++j] = '</td>';
             r[++j] = '</td>';
         }
         r[++j] = '</table>';
         $('#curentStock').html(r.join(''));
-        for (var i in obj.items) {
-            var a = '#buy-stock-' + obj.items[i].id;
-            $(a).button().on("click", function (e) {
-                e.preventDefault();
-                $("#buy-stock-dialog-" + item.id)
-                        .data('id', item.id)
-                        .dialog('open');
-            });
 
-            $("#buy-stock-dialog-" + item.id).find('text[id="buy-dialog-' + item.id + '-text"]').text(item.price);
+
+
+        var d = new Array();
+        var di = -1;
+        for (var i in obj.items) {
+            var item = obj.items[i];
+            d[++di] = '<div id="buy-stock-dialog-' + item.code + '" style="display: none" title="title"><form><sec:csrfInput/>';
+            d[++di] = '<div><text>Buy (</text><input  name="amount" type="number" maxlength="11"/><text id="buy-dialog-' + item.id + '-text"></text></div>';
+            d[++di] = '<div><input type="checkbox" name="confirmation-checkbox" value="check">I confirm transaction.</div>';
+            d[++di] = '</form></div>';
+            $('#buy-stock-dialog-' + item.code + '.ui-dialog-content.ui-widget-content').find('text[id="buy-dialog-' + item.id + '-text"]').text(' x ' + item.unit + ') stocks per ' + item.price + ' PLN');
+
+        }
+        $('#dialogs').html(d.join(''));
+
+        $('.dialogBuyOpen').click(function () {
+
+            var item = obj.items[$(this).attr('stock-code')];
             var title = 'Buy ' + item.code;
-            $("#buy-stock-dialog-" + item.id).dialog({
-                open: function (event, ui) {
-                    $("#buy-stock-dialog-" + item.id).find('input[name="amount"]').val(0);
-                },
-                autoOpen: false,
+            var $dialog = $("#buy-stock-dialog-" + $(this).attr('stock-code')).dialog({
+                autoOpen: true,
                 resizable: false,
                 title: title,
                 height: 200,
                 modal: true,
                 width: "auto",
+                open: function (event, ui) {
+                    $(this).find('input[name="amount"]').val(0);
+                    $(this).find('text[id="buy-dialog-' + item.id + '-text"]').text(' x ' + item.unit + ') stocks per ' + item.price + ' PLN');
+                },
                 buttons: {
                     "Buy"
                             : function () {
-                                var id = $(this).dialog().data('id');
-                                var amount = $("#buy-stock-dialog-" + item.id).find('input[name="amount"]').val();
-                                buy(id, amount);
+                                var id = item.id;
+                                var amount = $(this).find('input[name="amount"]').val();
+                                if ($(this).find('input[name="confirmation-checkbox"]').is(':checked')) {
+                                    if (Math.floor(amount) != amount || !$.isNumeric(amount)) {
+                                        return false;
+                                    } else {
+                                        if (amount === 0) {
+                                            return false;
+                                        } else {
+                                            buy(id, amount);
+                                            $(this).dialog("close");
+                                        }
+                                    }
+                                } else {
+                                    return  false;
+                                }
                             }
+                },
+                close: function (event, ui) {
+                    $(this).dialog("destroy");
                 }
             });
-        }
-
-
+            $dialog.dialog("open");
+        });
     }
 
     function buy(id, amount) {
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
-        var url = '${pageContext.request.contextPath}/stock/buy?id=' + id + '&amount=' + amount;
+        var url = '${pageContext.request.contextPath}/stock/buy?stockId=' + id + '&stockAmount=' + amount;
         $.ajax({
             dataType: 'json',
             beforeSend: function (xhr) {
@@ -152,22 +180,7 @@
         });
     }
 
-    function doCurrentStock() {
-        $.ajax({
-            dataType: 'json',
-            url: '${pageContext.request.contextPath}/stock/currentStock',
-            type: 'GET',
-            success: function (data) {
-                populateCurrentRatesTable(data);
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                $('#curentStock').html("Connection to service failed");
-            },
-            complete: function () {
-                setTimeout(doCurrentStock, 5000);
-            }
-        });
-    }
+
     $(document).ready(function () {
         doAjax();
     });

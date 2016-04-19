@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.t.stock.dao.stockexchange.StockExchangeDAO;
-import org.t.stock.service.publication.PublicationServiceImpl;
 import org.t.stock.spring.security.dao.UserDAO;
 import org.t.stock.web.model.RegisterForm;
 
@@ -29,13 +28,13 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     private StockExchangeDAO stockExchangeDAOImpl;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
         return userDAOImpl.loadUserByUsername(username);
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void createUser(RegisterForm registerForm) throws Exception {
+    public void createUser(final RegisterForm registerForm) throws Exception {
 
         if (!userDAOImpl.checkIUserExists(registerForm.getLogin())) {
             try {

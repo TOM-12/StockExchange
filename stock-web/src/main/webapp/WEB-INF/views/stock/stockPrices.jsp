@@ -62,16 +62,8 @@
     </div>
 </div>
 
-<div id="buy-stock-dialog-3" style="display: none" title="title">
-    <form>
-        <sec:csrfInput/>
-        <text>Buy </text><input  name="amount" type="number" maxlength="11"/><text id="buy-dialog-3-text"> stocks x  XX XXX
-            Base price is XX per XX</text>
-    </form>
-</div>
-
 <button  name="foo" value="upvote" onclick="post();">Upvote</button>
-
+<div id="dialogs"></div>
 <script>
 
 </script>

@@ -20,7 +20,7 @@ public class StockMapper implements RowMapper<Stock> {
                 .setUnit(rs.getInt("UNIT"))
                 .setPrice(rs.getBigDecimal("PRICE"))
                 .setAvailable(rs.getLong("AVAILABLE"))
-                .setPublicationId(rs.getLong("ID_PUBLICATION"))
+                .setPublicationId(rs.getLong("LAST_PUB_ID"))
                 .createStock();
 
         return stock;

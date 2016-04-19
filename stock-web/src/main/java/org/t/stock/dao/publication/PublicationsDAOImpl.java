@@ -140,10 +140,10 @@ public class PublicationsDAOImpl implements PublicationsDAO {
                 .append(" stocks.UNIT, \n")
                 .append(" stocks.PRICE, \n")
                 .append(" stocks.AVAILABLE, \n")
-                .append(" publications.ID_PUBLICATION \n")
-                .append(" FROM stocks , publications \n")
+                .append(" stocks.LAST_PUB_ID \n")
+                .append(" FROM stocks, publications\n")
                 .append(" WHERE 1=1 \n")
-                .append(" AND PUB_DATE = (SELECT MAX(PUB_DATE) FROM publications) \n")
+                .append(" AND publications.PUB_DATE = (SELECT MAX(PUB_DATE) FROM publications) \n")
                 .append(" ORDER BY stocks.code ASC \n");
 
         final ArrayList<Stock> stocks = new ArrayList<>(jdbcTemplate.query(selectStockSql.toString(), new StockMapper()));

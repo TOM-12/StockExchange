@@ -11,6 +11,6 @@ import org.t.stock.web.model.RegisterForm;
 public interface UserService {
 
     @Transactional(rollbackFor = Exception.class)
-    void createUser(RegisterForm registerForm) throws Exception;
+    void createUser(final RegisterForm registerForm) throws Exception;
 
 }
